@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Topicly.Hubs;
 
 namespace Topicly
 {
@@ -28,6 +29,7 @@ namespace Topicly
         {
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Topicly", Version = "v1"}); });
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,12 +43,17 @@ namespace Topicly
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
+            
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chatHub");
+            });
         }
     }
 }
