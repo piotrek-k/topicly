@@ -1,0 +1,23 @@
+version: "3.4"
+
+services:
+  topicly_server:
+    image: ${DOCKER_REGISTRY-}topicly_server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+      # - "5001:443"
+    environment:
+      # dbConfig ustalony na `true` wymusza użycie connection stringa dostosowanego pod docker-compose
+      dbConfig: "true"
+
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://+:80" # https://+:443;
+
+  db:
+    image: "mcr.microsoft.com/mssql/server:2017-latest"
+    environment:
+      SA_PASSWORD: "My_password123"
+      ACCEPT_EULA: "Y"

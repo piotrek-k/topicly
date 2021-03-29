@@ -29,9 +29,20 @@ namespace Topicly
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer (
-                Configuration.GetSection("DatabaseSettings")["DeployedAsContainer"]));
-            
+            // użycie innego Connection Stringa w zależności od ustawionej zmiennej środowiskowej
+            string enableDockerComposeConfig = Environment.GetEnvironmentVariable("dbConfig");
+
+            if (enableDockerComposeConfig != null && enableDockerComposeConfig.ToLower() == "true")
+            {
+                services.AddDbContext<ApplicationContext>(options => options.UseSqlServer (
+                    Configuration.GetSection("DatabaseSettings")["DockerComposeSetup"]));
+            }
+            else
+            {
+                services.AddDbContext<ApplicationContext>(options => options.UseSqlServer (
+                    Configuration.GetSection("DatabaseSettings")["DeployedAsContainer"]));
+            }
+
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Topicly", Version = "v1"}); });
             services.AddSignalR();
@@ -47,7 +58,7 @@ namespace Topicly
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Topicly v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             
             app.UseRouting();
