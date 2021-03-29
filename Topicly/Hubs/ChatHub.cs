@@ -9,6 +9,11 @@ namespace Topicly.Hubs
         {
             // Context.User.Identity powinno zawierać dane wysyłajacego
             
+            // TODO: zapisać wiadomość do bazy danych
+
+            // TODO: wysyłać wiadomość tylko do konkretnego użytkownika
+            //Clients.User(userId).SendAsync("message", arg1, arg2)
+            
             await Clients.All.SendAsync("broadcastMessage", name, message);
         }
     }
