@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using Data;
+using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -1,7 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Topicly.Data;
 
-namespace Topicly.Data
+namespace Data.Models
 {
     public class Message
     {

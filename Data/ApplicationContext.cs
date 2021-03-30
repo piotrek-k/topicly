@@ -1,6 +1,8 @@
+using Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Topicly.Data;
 
-namespace Topicly.Data
+namespace Data
 {
     public class ApplicationContext : DbContext
     {

@@ -1,6 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topicly", "Topicly\Topicly.csproj", "{9EBD084E-A3CD-474A-837B-5C5031FD26C7}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31112.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Topicly", "Topicly\Topicly.csproj", "{9EBD084E-A3CD-474A-837B-5C5031FD26C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{951A80FE-3E30-47FC-A8FE-D1325068ABD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +17,15 @@ Global
 		{9EBD084E-A3CD-474A-837B-5C5031FD26C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EBD084E-A3CD-474A-837B-5C5031FD26C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EBD084E-A3CD-474A-837B-5C5031FD26C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{951A80FE-3E30-47FC-A8FE-D1325068ABD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{951A80FE-3E30-47FC-A8FE-D1325068ABD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{951A80FE-3E30-47FC-A8FE-D1325068ABD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{951A80FE-3E30-47FC-A8FE-D1325068ABD2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {54A4FFE3-8AA6-4EA1-AC14-3FF8BB40559B}
 	EndGlobalSection
 EndGlobal
