@@ -6,11 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Topicly.Data;
+using Topicly.Hubs;
 
 namespace Topicly
 {
@@ -26,8 +29,23 @@ namespace Topicly
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // użycie innego Connection Stringa w zależności od ustawionej zmiennej środowiskowej
+            string enableDockerComposeConfig = Environment.GetEnvironmentVariable("dbConfig");
+
+            if (enableDockerComposeConfig != null && enableDockerComposeConfig.ToLower() == "true")
+            {
+                services.AddDbContext<ApplicationContext>(options => options.UseSqlServer (
+                    Configuration.GetSection("DatabaseSettings")["DockerComposeSetup"]));
+            }
+            else
+            {
+                services.AddDbContext<ApplicationContext>(options => options.UseSqlServer (
+                    Configuration.GetSection("DatabaseSettings")["DeployedAsContainer"]));
+            }
+
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Topicly", Version = "v1"}); });
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,13 +58,18 @@ namespace Topicly
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Topicly v1"));
             }
 
-            app.UseHttpsRedirection();
-
+            //app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chatHub");
+            });
         }
     }
 }
