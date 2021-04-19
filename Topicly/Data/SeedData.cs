@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Topicly.Data.Models.Chat;
+using Topicly.Data.Models.Topics;
 
 namespace Topicly.Data
 {
@@ -17,7 +19,20 @@ namespace Topicly.Data
                     return;
                 }
 
-                var chat = context.Chats.Add(new Chat());
+                var topic = context.Topics.Add(new Topic()
+                {
+                    Name = "Example name of topic",
+                    CreatedBy = "id_of_user_that_created_it"
+                });
+
+                context.SaveChanges();
+
+                var chat = context.Chats.Add(new Chat()
+                {
+                    TopicId = topic.Entity.Id,
+                    TopicAnswerer = "id_of_user_that_joined",
+                    TopicCreator = "id_of_user_that_created_it"
+                });
 
                 context.SaveChanges();
                 
