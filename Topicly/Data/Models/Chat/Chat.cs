@@ -24,7 +24,7 @@ namespace Topicly.Data.Models.Chat
         [ForeignKey(nameof(TopicId))]
         public Topic Topic { get; set; }
 
-        public string TopicName => Topic.Name;
+        public string TopicName => Topic?.Name;
 
         public ChatViewModel ToViewModel()
         {
