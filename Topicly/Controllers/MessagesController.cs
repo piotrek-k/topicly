@@ -21,7 +21,7 @@ namespace Topicly.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet("GetForChat/{chatId}")]
         public IEnumerable<MessageViewModel> GetMessagesForChat(int chatId)
         {
             // TODO: Zwracać tylko wiadomości należące do czatu

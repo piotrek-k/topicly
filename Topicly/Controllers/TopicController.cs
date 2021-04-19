@@ -23,9 +23,9 @@ namespace Topicly.Controllers
         
         /// <summary>
         /// GET
-        /// Propose next topic
+        /// Spersonalizaowana propozycja nowego tematu
         /// </summary>
-        [HttpGet]
+        [HttpGet("ProposeNext")]
         public async Task<TopicViewModel> ProposeNext()
         {
             // TODO: Algorytm generowania propozycji

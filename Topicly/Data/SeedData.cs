@@ -13,7 +13,7 @@ namespace Topicly.Data
         {
             using (var context = new ApplicationContext(serviceProvider.GetRequiredService<DbContextOptions<ApplicationContext>>()))
             {
-                if (context.Messages.Any())
+                if (context.Messages.Any() && context.Topics.Any())
                 {
                     // no need to populate db
                     return;

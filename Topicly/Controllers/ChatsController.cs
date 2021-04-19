@@ -21,7 +21,7 @@ namespace Topicly.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllForCurrentUser")]
         public IEnumerable<ChatViewModel> GetChatsForUser()
         {
             // TODO: Zwracać tylko czaty należące do użytkownika
