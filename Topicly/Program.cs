@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,15 +23,23 @@ namespace Topicly
                 var services = scope.ServiceProvider;
                 var logger = services.GetRequiredService<ILogger<Program>>();
 
-                try
+                do
                 {
-                    var context = services.GetRequiredService<ApplicationContext>();
-                    context.Database.EnsureCreated();
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, "An error occurred creating the DB");
-                }
+                    try
+                    {
+                        var context = services.GetRequiredService<ApplicationContext>();
+                        logger.LogInformation("Ensuring database is set up...");
+                        context.Database.EnsureCreated();
+
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex, "An error occurred creating the DB. Waiting 2 seconds until next " +
+                                            "attempt");
+                        Thread.Sleep(2000);
+                    }
+                } while (true);
 
                 try
                 {

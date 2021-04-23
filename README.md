@@ -1,22 +1,34 @@
 # Notatki
 
+Aplikacja działa na porcie **5001**
+
+API można przeglądać i testować pod adresem [/swagger/index.html](https://localhost:5001/swagger/index.html)
+
 ## Uruchomienie projektu
 
-Przy użyciu docker-compose:
+### Sposób 1: przy użyciu docker-compose:
+Po pobraniu zmian z git'a trzeba na nowo zbudować projekt (argument `--build`)
 ```bash
 docker-compose up --build
 ```
 
-Bez docker compose, konieczny .NET SDK:
+Kolejne uruchomienia można bez tego argumentu:
+```bash
+docker-compose up
+```
+
+### Sposób 2: Bez docker compose, konieczny .NET SDK:
 ```bash
 dotnet run
 ```
 
-API można przeglądać pod adresem [/swagger/index.html](https://localhost:5001/swagger/index.html)
-
 ## Uruchomienie bazy danych
 
-### Jako kontener
+### Wariant docker-compose
+
+Powinna uruchomić się sama
+
+### Ręczne uruchamiania jako kontener
 w bashu:
 
 ```bash
