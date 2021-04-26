@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Topicly.Data;
 using Topicly.ViewModels;
@@ -25,7 +26,8 @@ namespace Topicly.Controllers
         public IEnumerable<ChatViewModel> GetChatsForUser()
         {
             // TODO: Zwracać tylko czaty należące do użytkownika
-            return _context.Chats.ToList().Select(x => x.ToViewModel());
+            var chats = _context.Chats.Include(x => x.Topic).ToList();
+            return chats.Select(x => x.ToViewModel());
         }
     }
 }
