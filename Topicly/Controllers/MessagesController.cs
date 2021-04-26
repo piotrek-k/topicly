@@ -25,7 +25,7 @@ namespace Topicly.Controllers
         public IEnumerable<MessageViewModel> GetMessagesForChat(int chatId)
         {
             // TODO: Zwracać tylko wiadomości należące do czatu
-            return _context.Messages.ToList().Select(x => x.ToViewModel());
+            return _context.Messages.Where(y => y.ChatId == chatId).ToList().Select(x => x.ToViewModel());
         }
     }
 }
