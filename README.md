@@ -36,3 +36,21 @@ w bashu:
 ```
 
 Baza nasłuchuje na porcie `1433`. Connection string znajduje się w `appsettings.json`.
+
+## Jeśli baza danych nie działa
+
+Usunąć ją:
+
+```bash
+# Wyświetlić utworzone kontenery
+docker ps -a
+
+# Znaleźć taki o nazwie obrazu podobnym do "mcr.microsoft.com/mssql/server:2017-latest"
+# Skopiować jego id (powinno wyglądać tak: "b1461a50f71e")
+
+# Zatrzymać i usunąć bazę
+docker stop b1461a50f71e
+docker rm b1461a50f71e
+```
+
+Przy następnym uruchomieniu baza utworzy się na nowo.
