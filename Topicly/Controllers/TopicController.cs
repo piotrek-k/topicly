@@ -23,8 +23,7 @@ namespace Topicly.Controllers
         }
         
         /// <summary>
-        /// GET
-        /// Spersonalizaowana propozycja nowego tematu
+        /// Zwraca spersonalizowaną propozycję nowego tematu
         /// </summary>
         [HttpGet("ProposeNext")]
         public async Task<TopicViewModel> ProposeNext()
@@ -35,11 +34,11 @@ namespace Topicly.Controllers
         }
 
         /// <summary>
-        /// POST
         /// Tworzy czat na podstawie tematu
         /// </summary>
         /// <param name="topicId">Identyfikator wybranego tematu</param>
-        /// <returns>Unikalny identyfikator utworzonego czatu</returns>
+        /// <response code="200">Zwraca w odpowiedzi unikalny identyfikator utworzonego czatu</response>
+        /// <response code="404">Gdy nie znaleziono podanego identyfikatora tematu w bazie</response>
         [HttpPost("ChooseChat")]
         public async Task<ActionResult> CreateChat(int topicId)
         {

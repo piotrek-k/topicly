@@ -21,7 +21,10 @@ namespace Topicly.Controllers
             _context = context;
             _logger = logger;
         }
-
+        
+        /// <summary>
+        /// Lista czatów dla zalogowanego użytkownika
+        /// </summary>
         [HttpGet("GetAllForCurrentUser")]
         public IEnumerable<ChatViewModel> GetChatsForUser()
         {

@@ -21,6 +21,10 @@ namespace Topicly.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Lista wszystkich wiadomości wysłanych w ramach czatu
+        /// </summary>
+        /// <param name="chatId">Identyfikator czatu</param>
         [HttpGet("GetForChat/{chatId}")]
         public IEnumerable<MessageViewModel> GetMessagesForChat(int chatId)
         {
