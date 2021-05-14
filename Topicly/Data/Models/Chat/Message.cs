@@ -16,6 +16,8 @@ namespace Topicly.Data.Models.Chat
 
         public DateTimeOffset DateOfSending { get; set; }
         public string Content { get; set; }
+        
+        public string SenderId { get; set; }
 
         public MessageViewModel ToViewModel()
         {
@@ -24,7 +26,10 @@ namespace Topicly.Data.Models.Chat
                 Id = Id,
                 ChatId = ChatId,
                 DateOfSending = DateOfSending,
-                Content = Content
+                Content = Content,
+                SenderUniqueId = SenderId,
+                // TODO: Nie mam nazw użytkownika, więc na razie przesyłam ich id
+                SenderHumanReadableName = SenderId
             };
         }
     }

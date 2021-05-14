@@ -7,6 +7,9 @@ namespace Topicly.ViewModels
         public int Id { get; set; }
 
         public int ChatId { get; set; }
+        
+        public string SenderUniqueId { get; set; }
+        public string SenderHumanReadableName { get; set; }
 
         /// <summary>
         /// Data wysłania wiadomości
