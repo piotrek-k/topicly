@@ -2,7 +2,7 @@
 
 Aplikacja działa na porcie **5001**
 
-API można przeglądać i testować pod adresem [/swagger/index.html](https://localhost:5001/swagger/index.html)
+API można przeglądać i testować pod adresem [/swagger/index.html](http://localhost:5001/swagger/index.html)
 
 ## Uruchomienie projektu
 
