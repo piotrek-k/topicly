@@ -58,5 +58,23 @@ namespace Topicly.Controllers
 
             return Ok(addedChat.Entity.Id);
         }
+
+        /// <summary>
+        /// Wysłać w momencie gdy użytkownikowi użytkownik odrzuci zaproponowany temat.
+        /// Charakter informacyjny; żeby algorytm miał próbki tematów które nie interesują użytkownika.
+        /// </summary>
+        /// <param name="topicId">Identyfikator tematu</param>
+        [HttpPost("RejectTopicProposal")]
+        public async Task<ActionResult> RejectTopicProposal(int topicId)
+        {
+            if (await _context.Topics.AnyAsync(x => x.Id == topicId))
+            {
+                // TODO: zapisz wzmiankę o zdarzeniu w bazie 
+
+                return Ok();
+            }
+
+            return NotFound("Podany temat nie istnieje");
+        }
     }
 }
