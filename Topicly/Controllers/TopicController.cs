@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +31,10 @@ namespace Topicly.Controllers
         public async Task<TopicViewModel> ProposeNext()
         {
             // TODO: Algorytm generowania propozycji
-            var dbTopic = await _context.Topics.FirstOrDefaultAsync();
+            var numberOfTopics = await _context.Topics.CountAsync();
+            var chosenTopic = new Random().Next(numberOfTopics);
+
+            var dbTopic = await _context.Topics.Skip(chosenTopic).FirstOrDefaultAsync();
             return dbTopic.ToViewModel();
         }
 
@@ -75,6 +80,24 @@ namespace Topicly.Controllers
             }
 
             return NotFound("Podany temat nie istnieje");
+        }
+
+        /// <summary>
+        /// Tworzy propozycję nowego tematu
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("CreateTopic")]
+        public async Task<ActionResult> CreateTopic([FromBody] TopicCreationViewModel topicCreationViewModel)
+        {
+            await _context.Topics.AddAsync(new Topic()
+            {
+                Name = topicCreationViewModel.Content,
+                CreatedBy = "username", //TODO: ustawić prawdziwą nazwę użytkownika
+
+            });
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }
