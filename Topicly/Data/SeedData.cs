@@ -7,11 +7,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Topicly.Data
 {
+    using IdentityServer4.EntityFramework.Options;
+    using Microsoft.Extensions.Options;
+
     public class SeedData
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            using (var context = new ApplicationContext(serviceProvider.GetRequiredService<DbContextOptions<ApplicationContext>>()))
+            using (var context = new ApplicationDbContext(serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>(),
+                serviceProvider.GetRequiredService<IOptions<OperationalStoreOptions>>()))
             {
                 if (context.Messages.Any())
                 {
@@ -22,7 +26,7 @@ namespace Topicly.Data
                 var chat = context.Chats.Add(new Chat());
 
                 context.SaveChanges();
-                
+
                 context.Messages.Add(new Message()
                 {
                     Content = "test",

@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Data;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -16,7 +12,12 @@ namespace Topicly
     {
         public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
+            var host = CreateHostBuilder(args)
+                .ConfigureLogging(logging =>
+                {
+                    logging.AddConsole();
+                })
+                .Build();
 
             using (var scope = host.Services.CreateScope())
             {
@@ -25,7 +26,7 @@ namespace Topicly
 
                 try
                 {
-                    var context = services.GetRequiredService<ApplicationContext>();
+                    var context = services.GetRequiredService<ApplicationDbContext>();
                     context.Database.EnsureCreated();
                 }
                 catch (Exception ex)

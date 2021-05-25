@@ -1,8 +1,8 @@
-namespace Topicly.Data
+namespace Data.Models
 {
     public class Chat
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         
         // TODO: jak już będzie system logowania: przechować tu uczestników czatu
     }

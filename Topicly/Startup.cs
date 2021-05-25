@@ -1,19 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Globalization;
 using Data;
+using Data.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Topicly.Data;
 using Topicly.Hubs;
 
 namespace Topicly
@@ -35,17 +30,25 @@ namespace Topicly
 
             if (enableDockerComposeConfig != null && enableDockerComposeConfig.ToLower() == "true")
             {
-                services.AddDbContext<ApplicationContext>(options => options.UseSqlServer (
+                services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
                     Configuration.GetSection("DatabaseSettings")["DockerComposeSetup"]));
             }
             else
             {
-                services.AddDbContext<ApplicationContext>(options => options.UseSqlServer (
+                services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
                     Configuration.GetSection("DatabaseSettings")["DeployedAsContainer"]));
             }
 
+            services.AddDefaultIdentity<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.ExpireTimeSpan = TimeSpan.Parse(Configuration["CookiesMinutesTimeSpan"]);
+            });
+
             services.AddControllers();
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Topicly", Version = "v1"}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Topicly", Version = "v1" }); });
             services.AddSignalR();
         }
 
@@ -64,6 +67,7 @@ namespace Topicly
             
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
