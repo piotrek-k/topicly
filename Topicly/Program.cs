@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,27 +13,30 @@ namespace Topicly
     {
         public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args)
-                .ConfigureLogging(logging =>
-                {
-                    logging.AddConsole();
-                })
-                .Build();
+            var host = CreateHostBuilder(args).Build();
 
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 var logger = services.GetRequiredService<ILogger<Program>>();
 
-                try
+                do
                 {
-                    var context = services.GetRequiredService<ApplicationDbContext>();
-                    context.Database.EnsureCreated();
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, "An error occurred creating the DB");
-                }
+                    try
+                    {
+                        var context = services.GetRequiredService<ApplicationDbContext>();
+                        logger.LogInformation("Ensuring database is set up...");
+                        context.Database.EnsureCreated();
+
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex, "An error occurred creating the DB. Waiting 2 seconds until next " +
+                                            "attempt");
+                        Thread.Sleep(2000);
+                    }
+                } while (true);
 
                 try
                 {

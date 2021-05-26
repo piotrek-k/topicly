@@ -1,20 +1,39 @@
+using System;
 using System.Threading.Tasks;
+using Data;
+using Data.Models.Chats;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Topicly.Hubs
 {
     public class ChatHub : Hub
     {
-        public async Task SendMessage(string name, string message)
+        private readonly ApplicationDbContext _context;
+
+        public ChatHub(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+        
+        public async Task SendMessage(string name, string message, int chatId)
         {
             // Context.User.Identity powinno zawierać dane wysyłajacego
             
-            // TODO: zapisać wiadomość do bazy danych
+            // TODO: sprawdzić czy wysyłający użytkownik jest członkiem czatu na który wysyła wiadomość
+            
+            await _context.Messages.AddAsync(new Message()
+            {
+                ChatId = chatId,
+                Content = message,
+                SenderId = "senderId",
+                DateOfSending = DateTimeOffset.Now
+            });
+            await _context.SaveChangesAsync();
 
             // TODO: wysyłać wiadomość tylko do konkretnego użytkownika
             //Clients.User(userId).SendAsync("message", arg1, arg2)
             
-            await Clients.All.SendAsync("broadcastMessage", name, message);
+            await Clients.All.SendAsync("sendMessage", name, message, chatId);
         }
     }
 }

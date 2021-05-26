@@ -1,7 +1,8 @@
 using System;
-using System.Globalization;
+using System.IO;
+using System.Reflection;
 using Data;
-using Data.Models;
+using Data.Models.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Topicly.AutoMapper;
 using Topicly.Hubs;
 
 namespace Topicly
@@ -48,8 +50,18 @@ namespace Topicly
             });
 
             services.AddControllers();
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Topicly", Version = "v1" }); });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Topicly", Version = "v1"});
+                
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
             services.AddSignalR();
+
+            services.AddAutoMapper(config => config.AddProfile(new AutoMapperProfile()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

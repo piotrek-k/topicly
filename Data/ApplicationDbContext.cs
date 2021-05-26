@@ -1,3 +1,7 @@
+using Data.Models.Chats;
+using Data.Models.Topics;
+using Data.Models.Users;
+
 namespace Data
 {
     using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
@@ -6,7 +10,6 @@ namespace Data
     using Microsoft.Extensions.Options;
     using IdentityServer4.EntityFramework.Entities;
     using IdentityServer4.EntityFramework.Options;
-    using Data.Models;
 
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
@@ -17,6 +20,7 @@ namespace Data
 
         public DbSet<Message> Messages { get; set; }
         public DbSet<Chat> Chats { get; set; }
+        public DbSet<Topic> Topics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
