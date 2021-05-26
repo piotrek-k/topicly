@@ -12,8 +12,8 @@ services:
       - "5001:80" # aplikacja dostępna na porcie 5000
       # - "5001:443" # https chwilowo zablokowane
     environment:
-      # dbConfig ustalony na `true` wymusza użycie connection stringa dostosowanego pod docker-compose
-      dbConfig: "true"
+      # dbConfig ustalony na `docker_compose` wymusza użycie connection stringa dostosowanego pod docker-compose
+      DB_CONFIG: "docker_compose"
 
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "http://+:80" # https://+:443;
