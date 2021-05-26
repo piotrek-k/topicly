@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Data.Models.Chats;
+using Data.Models.Topics;
+using Topicly.ViewModels;
 
 namespace Topicly.AutoMapper
 {
@@ -6,7 +9,9 @@ namespace Topicly.AutoMapper
     {
         public AutoMapperProfile()
         {
-            //CreateMap<Chat, ChatViewModel>();
+            CreateMap<Chat, ChatViewModel>();
+            CreateMap<MessageViewModel, MessageViewModel>();
+            CreateMap<Topic, TopicViewModel>();
         }
     }
 }
