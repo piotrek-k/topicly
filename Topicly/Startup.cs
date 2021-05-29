@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Topicly.AutoMapper;
 using Topicly.Hubs;
@@ -28,17 +29,22 @@ namespace Topicly
         public void ConfigureServices(IServiceCollection services)
         {
             // użycie innego Connection Stringa w zależności od ustawionej zmiennej środowiskowej
-            string enableDockerComposeConfig = Environment.GetEnvironmentVariable("dbConfig");
-
-            if (enableDockerComposeConfig != null && enableDockerComposeConfig.ToLower() == "true")
+            string typeOfDbConfig = Environment.GetEnvironmentVariable("DB_CONFIG");
+            
+            if (typeOfDbConfig != null && typeOfDbConfig == "docker_compose")
             {
                 services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
                     Configuration.GetSection("DatabaseSettings")["DockerComposeSetup"]));
             }
-            else
+            else if (typeOfDbConfig != null && typeOfDbConfig == "db_as_container")
             {
                 services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
                     Configuration.GetSection("DatabaseSettings")["DeployedAsContainer"]));
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
+                    Configuration.GetSection("DatabaseSettings")["StandardSetup"]));
             }
 
             services.AddDefaultIdentity<ApplicationUser>()

@@ -32,8 +32,9 @@ namespace Topicly
                     }
                     catch (Exception ex)
                     {
-                        logger.LogError(ex, "An error occurred creating the DB. Waiting 2 seconds until next " +
+                        logger.LogError("An error occurred creating the DB. Waiting 2 seconds until next " +
                                             "attempt");
+                        logger.LogInformation($"Current db config: {Environment.GetEnvironmentVariable("DB_CONFIG")}");
                         Thread.Sleep(2000);
                     }
                 } while (true);
