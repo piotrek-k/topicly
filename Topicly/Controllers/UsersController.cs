@@ -30,12 +30,31 @@ namespace Topicly.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(newUser, new AuthenticationProperties { IsPersistent = rememberMe });
-                return Ok();
             }
             else
             {
                 return BadRequest(result.Errors);
             }
+
+            return Ok();
+        }
+
+        [AllowAnonymous, HttpPost]
+        public async Task<IActionResult> SignInUser(string email, string password, bool rememberMe)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, password);
+
+            if (isPasswordCorrect)
+            {
+                await _signInManager.SignInAsync(user, rememberMe);
+            }
+            else
+            {
+                return Unauthorized("Incorrect password");
+            }
+
+            return Ok();
         }
 
         [HttpGet, Authorize]
