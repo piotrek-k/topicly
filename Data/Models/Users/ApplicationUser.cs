@@ -7,5 +7,7 @@ namespace Data.Models.Users
         public ApplicationUser()
         {
         }
+
+        public string Nickname { get; set; }
     }
 }
