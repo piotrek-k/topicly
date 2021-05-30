@@ -2,23 +2,29 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Data;
+using Data.Models.Users;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Topicly.Controllers.BaseClasses;
 using Topicly.ViewModels;
 
 namespace Topicly.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ChatsController : Controller
-
+    [Authorize]
+    public class ChatsController : TopiclyControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<ChatsController> _logger;
         private readonly IMapper _mapper;
 
-        public ChatsController(ApplicationDbContext context, ILogger<ChatsController> logger, IMapper mapper)
+        public ChatsController(UserManager<ApplicationUser> userManager, ApplicationDbContext context,
+            ILogger<ChatsController> logger, IMapper mapper)
+            : base(userManager)
         {
             _context = context;
             _logger = logger;

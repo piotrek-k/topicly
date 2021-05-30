@@ -5,26 +5,35 @@ using AutoMapper;
 using Data;
 using Data.Models.Chats;
 using Data.Models.Topics;
+using Data.Models.Users;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Topicly.Controllers.BaseClasses;
 using Topicly.ViewModels;
 
 namespace Topicly.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TopicController : Controller
+    [Authorize]
+    public class TopicsController : TopiclyControllerBase
     {
         private ApplicationDbContext _context;
-        private readonly ILogger<TopicController> _logger;
+        private readonly ILogger<TopicsController> _logger;
         private readonly IMapper _mapper;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TopicController(ApplicationDbContext context, ILogger<TopicController> logger, IMapper mapper)
+        public TopicsController(ApplicationDbContext context, ILogger<TopicsController> logger, IMapper mapper,
+            UserManager<ApplicationUser> userManager)
+            : base(userManager)
         {
             _context = context;
             _logger = logger;
             _mapper = mapper;
+            _userManager = userManager;
         }
         
         /// <summary>
@@ -33,6 +42,8 @@ namespace Topicly.Controllers
         [HttpGet("ProposeNext")]
         public async Task<TopicViewModel> ProposeNext()
         {
+            var user = await GetCurrentUser();
+
             // TODO: Algorytm generowania propozycji
             var numberOfTopics = await _context.Topics.CountAsync();
             var chosenTopic = new Random().Next(numberOfTopics);
@@ -56,10 +67,12 @@ namespace Topicly.Controllers
                 return NotFound("Podany temat nie istnieje");
             }
 
+            var user = await GetCurrentUser();
+
             var addedChat = await _context.Chats.AddAsync(new Chat()
             {
                 TopicCreator = dbTopic.CreatedBy,
-                TopicAnswerer = "example_user_1",
+                TopicAnswerer = user.Id,
                 TopicId = dbTopic.Id
             });
             await _context.SaveChangesAsync();
@@ -75,6 +88,7 @@ namespace Topicly.Controllers
         [HttpPost("RejectTopicProposal")]
         public async Task<ActionResult> RejectTopicProposal(int topicId)
         {
+            var user = GetCurrentUser();
             if (await _context.Topics.AnyAsync(x => x.Id == topicId))
             {
                 // TODO: zapisz wzmiankę o zdarzeniu w bazie 
@@ -92,11 +106,12 @@ namespace Topicly.Controllers
         [HttpPost("CreateTopic")]
         public async Task<ActionResult> CreateTopic([FromBody] TopicCreationViewModel topicCreationViewModel)
         {
-            await _context.Topics.AddAsync(new Topic()
+            var user = await GetCurrentUser();
+
+            await _context.Topics.AddAsync(new Topic
             {
                 Name = topicCreationViewModel.Content,
-                CreatedBy = "username", //TODO: ustawić prawdziwą nazwę użytkownika
-
+                CreatedBy = user.Id
             });
             await _context.SaveChangesAsync();
 

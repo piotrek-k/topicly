@@ -1,10 +1,13 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using Data;
 using Data.Models.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,8 +50,26 @@ namespace Topicly
                     Configuration.GetSection("DatabaseSettings")["StandardSetup"]));
             }
 
-            services.AddDefaultIdentity<ApplicationUser>()
+            services.AddDefaultIdentity<ApplicationUser>(opt =>
+                {
+                    var stringBuilder = new StringBuilder();
+
+                    for (char c = 'a'; c != 'z'; ++c) stringBuilder.Append(c);
+                    for (char c = 'A'; c != 'Z'; ++c) stringBuilder.Append(c);
+                    for (char c = '0'; c != '9'; ++c) stringBuilder.Append(c);
+                    stringBuilder.Append("-_");
+
+                    opt.User.AllowedUserNameCharacters =  stringBuilder.ToString();
+                })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddAuthorization(options =>
+            {
+                options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+            });
 
             services.ConfigureApplicationCookie(options =>
             {

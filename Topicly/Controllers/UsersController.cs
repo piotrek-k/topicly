@@ -1,35 +1,40 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using AutoMapper;
 using Data.Models.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Topicly.Controllers.BaseClasses;
+using Topicly.RequestsAndResponsesModels;
 
 namespace Topicly.Controllers
 {
-
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    [Authorize]
+    public class UsersController : TopiclyControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private SignInManager<ApplicationUser> SignInManager { get; }
+        private IMapper AutoMapper { get; }
 
-        public UsersController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public UsersController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IMapper autoMapper)
+            : base(userManager)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            SignInManager = signInManager;
+            AutoMapper = autoMapper;
         }
 
-        [AllowAnonymous, HttpPost]
-        public async Task<IActionResult> CreateUser(string email, string password, bool rememberMe)
+        [HttpPost("sign-up")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SignUpUser([FromBody] User_Request_SignUp req)
         {
-            var newUser = new ApplicationUser { Email = email, UserName = email };
-            var result = await _userManager.CreateAsync(newUser, password);
+            var newUser = AutoMapper.Map<User_Request_SignUp, ApplicationUser>(req);
+            var result = await UserManager.CreateAsync(newUser, req.Password);
 
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(newUser, new AuthenticationProperties { IsPersistent = rememberMe });
+                await SignInManager.SignInAsync(newUser, new AuthenticationProperties { IsPersistent = req.RememberMe });
             }
             else
             {
@@ -39,40 +44,70 @@ namespace Topicly.Controllers
             return Ok();
         }
 
-        [AllowAnonymous, HttpPost]
-        public async Task<IActionResult> SignInUser(string email, string password, bool rememberMe)
+        [HttpPost("sign-in")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SignInUser([FromBody] User_Request_SignIn req)
         {
-            var user = await _userManager.FindByEmailAsync(email);
-            var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, password);
-
-            if (isPasswordCorrect)
+            var user = await UserManager.FindByEmailAsync(req.Email);
+            if (user == null)
             {
-                await _signInManager.SignInAsync(user, rememberMe);
+                return BadRequest("No account exists for the given e-mail address");
             }
-            else
+
+            var passwordCorrect = await UserManager.CheckPasswordAsync(user, req.Password);
+            if (passwordCorrect == false)
             {
-                return Unauthorized("Incorrect password");
+                return BadRequest("Incorrect password");
+            }
+
+            await SignInManager.SignInAsync(user, req.RememberMe);
+            return Ok();
+        }
+
+        [HttpPost("sign-out")]
+        public async Task<IActionResult> SignOutUser()
+        {
+            await SignInManager.SignOutAsync();
+            return Ok();
+        }
+
+        [HttpPatch("change-username")]
+        public async Task<IActionResult> ChangeUserName([FromBody] User_Request_ChangeName req)
+        {
+            var user = await GetCurrentUser();
+            var result = await UserManager.SetUserNameAsync(user, req.NewUserName);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
             }
 
             return Ok();
         }
 
-        [HttpGet, Authorize]
-        public async Task<IActionResult> GetUserEmail()
+        [HttpPatch("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] User_Request_ChangePassword req)
         {
-            return Ok(await Task.FromResult(_userManager.GetUserName(HttpContext.User)));
+            var user = await GetCurrentUser();
+            var result = await UserManager.ChangePasswordAsync(user, req.CurrentPassword, req.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return Ok();
         }
 
-        [HttpPost("sign-out")]
-        public async Task<IActionResult> LogOutUsers()
+        [HttpDelete("delete")]
+        public async Task<IActionResult> DeleteUser()
         {
-            try
+            var user = await GetCurrentUser();
+            var result = await UserManager.DeleteAsync(user);
+
+            if (!result.Succeeded)
             {
-                await _signInManager.SignOutAsync();
-            }
-            catch
-            {
-                return BadRequest();
+                return BadRequest(result.Errors);
             }
 
             return Ok();
