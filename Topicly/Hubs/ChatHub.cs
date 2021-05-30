@@ -20,20 +20,21 @@ namespace Topicly.Hubs
             // Context.User.Identity powinno zawierać dane wysyłajacego
             
             // TODO: sprawdzić czy wysyłający użytkownik jest członkiem czatu na który wysyła wiadomość
-            
+
+            var receivedMessageAt = DateTimeOffset.Now;
             await _context.Messages.AddAsync(new Message()
             {
                 ChatId = chatId,
                 Content = message,
                 SenderId = "senderId",
-                DateOfSending = DateTimeOffset.Now
+                DateOfSending = receivedMessageAt
             });
             await _context.SaveChangesAsync();
 
             // TODO: wysyłać wiadomość tylko do konkretnego użytkownika
             //Clients.User(userId).SendAsync("message", arg1, arg2)
             
-            await Clients.All.SendAsync("sendMessage", name, message, chatId);
+            await Clients.All.SendAsync("sendMessage", name, message, chatId, receivedMessageAt);
         }
     }
 }
