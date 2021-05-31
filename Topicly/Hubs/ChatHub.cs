@@ -26,7 +26,7 @@ namespace Topicly.Hubs
             {
                 ChatId = chatId,
                 Content = message,
-                SenderId = "senderId",
+                UserId = "senderId",
                 DateOfSending = receivedMessageAt
             });
             await _context.SaveChangesAsync();

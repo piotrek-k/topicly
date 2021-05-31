@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Data.Models.Topics
 {
     /// <summary>
@@ -16,5 +18,7 @@ namespace Data.Models.Topics
         /// Identyfikator użytkownika który utworzył ten temat
         /// </summary>
         public string CreatedBy { get; set; }
+
+        public List<TopicCandidate> TopicCandidates { get; set; }
     }
 }

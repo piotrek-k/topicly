@@ -1,6 +1,6 @@
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
-
+using Data.Models.Users;
+    
 namespace Data.Models.Chats
 {
     /// <summary>
@@ -9,16 +9,12 @@ namespace Data.Models.Chats
     public class Message
     {
         public int Id { get; set; }
-
-        public int ChatId { get; set; }
-
-        [ForeignKey(nameof(ChatId))]
-        public Chat Chat { get; set; }
-
-        public DateTimeOffset DateOfSending { get; set; }
-
         public string Content { get; set; }
-        
-        public string SenderId { get; set; }
+        public DateTimeOffset DateOfSending { get; set; }
+        public int ChatId { get; set; }
+        public string UserId { get; set; }
+
+        public Chat Chat { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }
