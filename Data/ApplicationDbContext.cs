@@ -23,6 +23,7 @@ namespace Data
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<UserReaction> Reactions { get; set; }
+        public DbSet<SeenByUser> SeenByUser { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -7,6 +8,7 @@ using Data.Models.Chats;
 using Data.Models.Topics;
 using Data.Models.Users;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -35,7 +37,7 @@ namespace Topicly.Controllers
             _mapper = mapper;
             _userManager = userManager;
         }
-        
+
         /// <summary>
         /// Zwraca spersonalizowaną propozycję nowego tematu
         /// </summary>
@@ -44,12 +46,50 @@ namespace Topicly.Controllers
         {
             var user = await GetCurrentUser();
 
-            // TODO: Algorytm generowania propozycji
-            var numberOfTopics = await _context.Topics.CountAsync();
-            var chosenTopic = new Random().Next(numberOfTopics);
+            // Pobranie listy tematów z ostatnich 24h, które nie zostały jeszcze przeczytane przez użytkownika
+            var topics =
+                from t in _context.Set<Topic>()
+                from s in _context.Set<SeenByUser>().Where(x => x.TopicId != t.Id).DefaultIfEmpty()
+                where s == default(SeenByUser) &&
+                      t.CreatedAt >= DateTimeOffset.Now.AddHours(-24) &&
+                      t.CreatedBy != user.Id
+                select t;
 
-            var dbTopic = await _context.Topics.Skip(chosenTopic).FirstOrDefaultAsync();
-            return _mapper.Map<TopicViewModel>(dbTopic);
+            var allReactionsCount = _context.Reactions
+                .Where(x => x.UserId == user.Id)
+                .Sum(x => x.PositiveCount);
+
+            // Obliczenie wskaźników dla tagów
+            var tagStrength = _context.Reactions
+                .Where(x => x.UserId == user.Id)
+                .Select(x => new
+                    {Id = x.Id, Keyword = x.Keyword, Strength = x.PositiveCount / (float) allReactionsCount});
+
+            // Obliczenie wskaźników dla tematów
+            List<(Topic, float)> topicRank = new List<(Topic, float)>();
+            float sumOfStrengthValues = 0;
+            foreach (var topic in topics)
+            {
+                float topicStrength = 0;
+                foreach (var tag in tagStrength)
+                {
+                    // TODO: Contains nie będzie działać w niektórych przypadkach, dorobić potem lepszy regex
+                    if (topic.Tags.Contains(tag.Keyword))
+                    {
+                        topicStrength += tag.Strength;
+                    }
+                }
+                topicRank.Add((topic, topicStrength));
+                sumOfStrengthValues += topicStrength;
+            }
+
+            // Normalizacja wskaźników
+            topicRank.ForEach(x => x.Item2 /= sumOfStrengthValues);
+            
+            // Posortuj, weź najlepszy
+            var bestTopic = topicRank.OrderBy(x => x.Item2).FirstOrDefault();
+
+            return _mapper.Map<TopicViewModel>(bestTopic);
         }
 
         /// <summary>
