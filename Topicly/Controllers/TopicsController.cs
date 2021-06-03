@@ -43,7 +43,7 @@ namespace Topicly.Controllers
         /// Zwraca spersonalizowaną propozycję nowego tematu
         /// </summary>
         [HttpGet("ProposeNext")]
-        public async Task<TopicViewModel> ProposeNext()
+        public async Task<ActionResult<TopicViewModel>> ProposeNext()
         {
             var user = await GetCurrentUser();
 
@@ -85,13 +85,34 @@ namespace Topicly.Controllers
                 sumOfStrengthValues += topicStrength;
             }
 
-            // Normalizacja wskaźników
-            //var newTopicRank = topicRank.Select(x => (x.Item1, x.Item2 /= sumOfStrengthValues));
+            // Normalizacja wskaźników (żeby sumowały się do 1)
+            var newTopicRank = topicRank.Select(x => (x.Item1, x.Item2 /= sumOfStrengthValues));
 
+            // Potraktuj wskaźniki jak prawdopodobieństwa, wylosuj temat
+            Random rand = new Random();
+            double previousRates = 0;
+            var randNum = rand.NextDouble();
+            Topic chosenTopic = null;
+            foreach (var t in newTopicRank)
+            {
+                if (randNum >= previousRates && randNum < previousRates + t.Item2)
+                {
+                    chosenTopic = t.Item1;
+                    break;
+                }
+
+                previousRates += t.Item2;
+            }
+
+            if (chosenTopic == null)
+            {
+                return StatusCode(500);
+            }
+                
             // Posortuj, weź najlepszy
-            var bestTopic = topicRank.OrderByDescending(x => x.Item2).FirstOrDefault();
+            //var bestTopic = topicRank.OrderByDescending(x => x.Item2).FirstOrDefault();
 
-            return _mapper.Map<TopicViewModel>(bestTopic.Item1);
+            return _mapper.Map<TopicViewModel>(chosenTopic);
         }
 
         /// <summary>
