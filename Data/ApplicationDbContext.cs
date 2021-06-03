@@ -1,3 +1,4 @@
+using Data.Models.Algorithm;
 using Data.Models.Chats;
 using Data.Models.Topics;
 using Data.Models.Users;
@@ -21,6 +22,8 @@ namespace Data
         public DbSet<Message> Messages { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Topic> Topics { get; set; }
+        public DbSet<UserReaction> Reactions { get; set; }
+        public DbSet<SeenByUser> SeenByUser { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

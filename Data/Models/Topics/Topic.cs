@@ -1,3 +1,5 @@
+using System;
+
 namespace Data.Models.Topics
 {
     /// <summary>
@@ -16,5 +18,16 @@ namespace Data.Models.Topics
         /// Identyfikator użytkownika który utworzył ten temat
         /// </summary>
         public string CreatedBy { get; set; }
+        
+        /// <summary>
+        /// Data utworzenia tematu
+        /// </summary>
+        public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
+
+        /// <summary>
+        /// Jako jeden ciąg znaków, oddzielone średnikiem
+        /// Przykład: tag1;tag2;tag 3;
+        /// </summary>
+        public string Tags { get; set; }
     }
 }

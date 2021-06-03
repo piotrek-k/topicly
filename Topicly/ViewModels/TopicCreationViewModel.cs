@@ -13,9 +13,9 @@ namespace Topicly.ViewModels
         public string Content { get; set; }
         
         /// <summary>
-        /// Lista nazw tagów powiązanych z tematem (?)
+        /// Lista nazw tagów powiązanych z tematem
         /// </summary>
-        public string[] Tags { get; set; }
+        public string Tags { get; set; }
         
         /// <summary>
         /// Moment w którym temat ulega przedawnieniu (?)

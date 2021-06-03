@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data;
+using Data.Models.Algorithm;
 using Data.Models.Chats;
 using Data.Models.Topics;
 using Data.Models.Users;
@@ -35,21 +38,98 @@ namespace Topicly.Controllers
             _mapper = mapper;
             _userManager = userManager;
         }
-        
+
         /// <summary>
         /// Zwraca spersonalizowaną propozycję nowego tematu
         /// </summary>
+        /// <response code="404">Gdy brakuje tematów do zaproponowania</response> 
         [HttpGet("ProposeNext")]
-        public async Task<TopicViewModel> ProposeNext()
+        public async Task<ActionResult<TopicViewModel>> ProposeNext()
         {
             var user = await GetCurrentUser();
 
-            // TODO: Algorytm generowania propozycji
-            var numberOfTopics = await _context.Topics.CountAsync();
-            var chosenTopic = new Random().Next(numberOfTopics);
+            // Pobranie listy tematów z ostatnich 24h, które nie zostały jeszcze przeczytane przez użytkownika
+            var topics =
+                (from t in _context.Set<Topic>()
+                    from s in _context.Set<SeenByUser>().Where(x => x.TopicId == t.Id).DefaultIfEmpty()
+                    where s == null &&
+                          t.CreatedAt >= DateTimeOffset.Now.AddHours(-24) &&
+                          t.CreatedBy != user.Id
+                    select t).ToList();
 
-            var dbTopic = await _context.Topics.Skip(chosenTopic).FirstOrDefaultAsync();
-            return _mapper.Map<TopicViewModel>(dbTopic);
+            var allReactionsCount = _context.Reactions
+                .Where(x => x.UserId == user.Id)
+                .Sum(x => x.PositiveCount);
+
+            // Obliczenie wskaźników dla tagów
+            var tagStrength = (_context.Reactions
+                .Where(x => x.UserId == user.Id)
+                .Select(x => new
+                    {Id = x.Id, Keyword = x.Keyword, Strength = x.PositiveCount / (float) allReactionsCount})).ToList();
+
+            // Obliczenie wskaźników dla tematów
+            List<(Topic, double)> topicRank = new List<(Topic, double)>();
+            double sumOfStrengthValues = 0;
+            foreach (var topic in topics)
+            {
+                double topicStrength = 0;
+                foreach (var tag in tagStrength)
+                {
+                    Regex rgx = new Regex(@"(;|^)" + tag.Keyword + @"(;|$)");
+                    if (topic.Tags != null && rgx.IsMatch(topic.Tags))
+                    {
+                        topicStrength += tag.Strength;
+                    }
+                }
+
+                topicRank.Add((topic, topicStrength));
+                sumOfStrengthValues += topicStrength;
+            }
+
+            Topic chosenTopic = null;
+            if (sumOfStrengthValues > 0)
+            {
+                // Normalizacja wskaźników (żeby sumowały się do 1)
+                var newTopicRank = topicRank.Select(x => (x.Item1, x.Item2 /= sumOfStrengthValues));
+
+                // Potraktuj wskaźniki jak prawdopodobieństwa, wylosuj temat
+                Random rand = new Random();
+                double previousRates = 0;
+                var randNum = rand.NextDouble();
+                
+                foreach (var t in newTopicRank)
+                {
+                    if (randNum >= previousRates && randNum < previousRates + t.Item2)
+                    {
+                        chosenTopic = t.Item1;
+                        break;
+                    }
+
+                    previousRates += t.Item2;
+                }
+            }
+            else if(topicRank.Count > 0)
+            {
+                // zostały same tematy o wskaźnikach 0
+
+                var randNum = new Random().Next(topicRank.Count);
+                chosenTopic = topicRank[randNum].Item1;
+            }
+
+            if (chosenTopic == null)
+            {
+                return NotFound("Brak tematów do zaproponowania");
+            }
+
+            // Oznacz zwrócony temat jako "zobaczony przez użytkownika". Nie pokazuj go użytkownikowi więcej.
+            await _context.SeenByUser.AddAsync(new SeenByUser()
+            {
+                TopicId = chosenTopic.Id,
+                UserId = user.Id
+            });
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<TopicViewModel>(chosenTopic);
         }
 
         /// <summary>
@@ -69,12 +149,39 @@ namespace Topicly.Controllers
 
             var user = await GetCurrentUser();
 
+            // utworzenie czatu
             var addedChat = await _context.Chats.AddAsync(new Chat()
             {
                 TopicCreator = dbTopic.CreatedBy,
                 TopicAnswerer = user.Id,
                 TopicId = dbTopic.Id
             });
+
+            // zwiększenie PositiveCount dla tagów na potrzeby algorytmu proponowania tematu
+            foreach (var tag in dbTopic.Tags.Split(";"))
+            {
+                if (tag == "" || tag == null)
+                {
+                    continue;
+                }
+
+                var reaction = _context.Reactions.FirstOrDefault(x => x.UserId == user.Id && x.Keyword == tag);
+                if (reaction == null)
+                {
+                    await _context.Reactions.AddAsync(new UserReaction()
+                    {
+                        Keyword = tag,
+                        NegativeCount = 0,
+                        PositiveCount = 1,
+                        UserId = user.Id
+                    });
+                }
+                else
+                {
+                    reaction.PositiveCount++;
+                }
+            }
+
             await _context.SaveChangesAsync();
 
             return Ok(addedChat.Entity.Id);
@@ -88,15 +195,40 @@ namespace Topicly.Controllers
         [HttpPost("RejectTopicProposal")]
         public async Task<ActionResult> RejectTopicProposal(int topicId)
         {
-            var user = GetCurrentUser();
-            if (await _context.Topics.AnyAsync(x => x.Id == topicId))
+            var user = await GetCurrentUser();
+            var dbTopic = await _context.Topics.FirstOrDefaultAsync(x => x.Id == topicId);
+            if (dbTopic == null)
             {
-                // TODO: zapisz wzmiankę o zdarzeniu w bazie 
-
-                return Ok();
+                return NotFound("Podany temat nie istnieje");
             }
 
-            return NotFound("Podany temat nie istnieje");
+            foreach (var tag in dbTopic.Tags.Split(";"))
+            {
+                if (tag == "")
+                {
+                    continue;
+                }
+
+                var reaction = _context.Reactions.FirstOrDefault(x => x.UserId == user.Id && x.Keyword == tag);
+                if (reaction == null)
+                {
+                    await _context.Reactions.AddAsync(new UserReaction()
+                    {
+                        Keyword = tag,
+                        NegativeCount = 1,
+                        PositiveCount = 0,
+                        UserId = user.Id
+                    });
+                }
+                else
+                {
+                    reaction.NegativeCount++;
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         /// <summary>
@@ -111,7 +243,8 @@ namespace Topicly.Controllers
             await _context.Topics.AddAsync(new Topic
             {
                 Name = topicCreationViewModel.Content,
-                CreatedBy = user.Id
+                CreatedBy = user.Id,
+                Tags = topicCreationViewModel.Tags
             });
             await _context.SaveChangesAsync();
 
