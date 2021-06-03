@@ -14,6 +14,7 @@ namespace Topicly.Controllers.BaseClasses
             UserManager = userManager;
         }
 
+        [NonAction]
         public async Task<ApplicationUser> GetCurrentUser()
         {
             var userIdentity = HttpContext.User.Identity;

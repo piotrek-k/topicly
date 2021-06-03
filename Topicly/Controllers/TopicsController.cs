@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data;
@@ -48,33 +49,34 @@ namespace Topicly.Controllers
 
             // Pobranie listy tematów z ostatnich 24h, które nie zostały jeszcze przeczytane przez użytkownika
             var topics =
-                from t in _context.Set<Topic>()
+                (from t in _context.Set<Topic>()
                 from s in _context.Set<SeenByUser>().Where(x => x.TopicId != t.Id).DefaultIfEmpty()
                 where s == default(SeenByUser) &&
                       t.CreatedAt >= DateTimeOffset.Now.AddHours(-24) &&
                       t.CreatedBy != user.Id
-                select t;
+                select t).ToList();
 
             var allReactionsCount = _context.Reactions
                 .Where(x => x.UserId == user.Id)
                 .Sum(x => x.PositiveCount);
 
             // Obliczenie wskaźników dla tagów
-            var tagStrength = _context.Reactions
+            var tagStrength = (_context.Reactions
                 .Where(x => x.UserId == user.Id)
                 .Select(x => new
-                    {Id = x.Id, Keyword = x.Keyword, Strength = x.PositiveCount / (float) allReactionsCount});
+                    {Id = x.Id, Keyword = x.Keyword, Strength = x.PositiveCount / (float) allReactionsCount})).ToList();
 
             // Obliczenie wskaźników dla tematów
-            List<(Topic, float)> topicRank = new List<(Topic, float)>();
-            float sumOfStrengthValues = 0;
+            List<(Topic, double)> topicRank = new List<(Topic, double)>();
+            double sumOfStrengthValues = 0;
             foreach (var topic in topics)
             {
-                float topicStrength = 0;
+                double topicStrength = 0;
                 foreach (var tag in tagStrength)
                 {
+                    Regex rgx = new Regex(@"(;|^)" + tag.Keyword + @"(;|$)");
                     // TODO: Contains nie będzie działać w niektórych przypadkach, dorobić potem lepszy regex
-                    if (topic.Tags.Contains(tag.Keyword))
+                    if (topic.Tags != null && rgx.IsMatch(topic.Tags))
                     {
                         topicStrength += tag.Strength;
                     }
@@ -84,12 +86,12 @@ namespace Topicly.Controllers
             }
 
             // Normalizacja wskaźników
-            topicRank.ForEach(x => x.Item2 /= sumOfStrengthValues);
-            
-            // Posortuj, weź najlepszy
-            var bestTopic = topicRank.OrderBy(x => x.Item2).FirstOrDefault();
+            //var newTopicRank = topicRank.Select(x => (x.Item1, x.Item2 /= sumOfStrengthValues));
 
-            return _mapper.Map<TopicViewModel>(bestTopic);
+            // Posortuj, weź najlepszy
+            var bestTopic = topicRank.OrderByDescending(x => x.Item2).FirstOrDefault();
+
+            return _mapper.Map<TopicViewModel>(bestTopic.Item1);
         }
 
         /// <summary>
