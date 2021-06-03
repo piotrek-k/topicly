@@ -5,11 +5,11 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data;
+using Data.Models.Algorithm;
 using Data.Models.Chats;
 using Data.Models.Topics;
 using Data.Models.Users;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -111,12 +111,39 @@ namespace Topicly.Controllers
 
             var user = await GetCurrentUser();
 
+            // utworzenie czatu
             var addedChat = await _context.Chats.AddAsync(new Chat()
             {
                 TopicCreator = dbTopic.CreatedBy,
                 TopicAnswerer = user.Id,
                 TopicId = dbTopic.Id
             });
+            
+            // zwiększenie PositiveCount dla tagów na potrzeby algorytmu proponowania tematu
+            foreach (var tag in dbTopic.Tags.Split(";"))
+            {
+                if (tag == "" || tag == null)
+                {
+                    continue;
+                }
+                
+                var reaction = _context.Reactions.FirstOrDefault(x => x.UserId == user.Id && x.Keyword == tag);
+                if (reaction == null)
+                {
+                    await _context.Reactions.AddAsync(new UserReaction()
+                    {
+                        Keyword = tag,
+                        NegativeCount = 0,
+                        PositiveCount = 1,
+                        UserId = user.Id
+                    });
+                }
+                else
+                {
+                    reaction.PositiveCount++;
+                }
+            }
+            
             await _context.SaveChangesAsync();
 
             return Ok(addedChat.Entity.Id);
