@@ -42,6 +42,7 @@ namespace Topicly.Controllers
         /// <summary>
         /// Zwraca spersonalizowaną propozycję nowego tematu
         /// </summary>
+        /// <response code="404">Gdy brakuje tematów do zaproponowania</response> 
         [HttpGet("ProposeNext")]
         public async Task<ActionResult<TopicViewModel>> ProposeNext()
         {
@@ -50,11 +51,11 @@ namespace Topicly.Controllers
             // Pobranie listy tematów z ostatnich 24h, które nie zostały jeszcze przeczytane przez użytkownika
             var topics =
                 (from t in _context.Set<Topic>()
-                from s in _context.Set<SeenByUser>().Where(x => x.TopicId != t.Id).DefaultIfEmpty()
-                where s == default(SeenByUser) &&
-                      t.CreatedAt >= DateTimeOffset.Now.AddHours(-24) &&
-                      t.CreatedBy != user.Id
-                select t).ToList();
+                    from s in _context.Set<SeenByUser>().Where(x => x.TopicId == t.Id).DefaultIfEmpty()
+                    where s == null &&
+                          t.CreatedAt >= DateTimeOffset.Now.AddHours(-24) &&
+                          t.CreatedBy != user.Id
+                    select t).ToList();
 
             var allReactionsCount = _context.Reactions
                 .Where(x => x.UserId == user.Id)
@@ -75,42 +76,58 @@ namespace Topicly.Controllers
                 foreach (var tag in tagStrength)
                 {
                     Regex rgx = new Regex(@"(;|^)" + tag.Keyword + @"(;|$)");
-                    // TODO: Contains nie będzie działać w niektórych przypadkach, dorobić potem lepszy regex
                     if (topic.Tags != null && rgx.IsMatch(topic.Tags))
                     {
                         topicStrength += tag.Strength;
                     }
                 }
+
                 topicRank.Add((topic, topicStrength));
                 sumOfStrengthValues += topicStrength;
             }
 
-            // Normalizacja wskaźników (żeby sumowały się do 1)
-            var newTopicRank = topicRank.Select(x => (x.Item1, x.Item2 /= sumOfStrengthValues));
-
-            // Potraktuj wskaźniki jak prawdopodobieństwa, wylosuj temat
-            Random rand = new Random();
-            double previousRates = 0;
-            var randNum = rand.NextDouble();
             Topic chosenTopic = null;
-            foreach (var t in newTopicRank)
+            if (sumOfStrengthValues > 0)
             {
-                if (randNum >= previousRates && randNum < previousRates + t.Item2)
-                {
-                    chosenTopic = t.Item1;
-                    break;
-                }
+                // Normalizacja wskaźników (żeby sumowały się do 1)
+                var newTopicRank = topicRank.Select(x => (x.Item1, x.Item2 /= sumOfStrengthValues));
 
-                previousRates += t.Item2;
+                // Potraktuj wskaźniki jak prawdopodobieństwa, wylosuj temat
+                Random rand = new Random();
+                double previousRates = 0;
+                var randNum = rand.NextDouble();
+                
+                foreach (var t in newTopicRank)
+                {
+                    if (randNum >= previousRates && randNum < previousRates + t.Item2)
+                    {
+                        chosenTopic = t.Item1;
+                        break;
+                    }
+
+                    previousRates += t.Item2;
+                }
+            }
+            else if(topicRank.Count > 0)
+            {
+                // zostały same tematy o wskaźnikach 0
+
+                var randNum = new Random().Next(topicRank.Count);
+                chosenTopic = topicRank[randNum].Item1;
             }
 
             if (chosenTopic == null)
             {
-                return StatusCode(500);
+                return NotFound("Brak tematów do zaproponowania");
             }
-                
-            // Posortuj, weź najlepszy
-            //var bestTopic = topicRank.OrderByDescending(x => x.Item2).FirstOrDefault();
+
+            // Oznacz zwrócony temat jako "zobaczony przez użytkownika". Nie pokazuj go użytkownikowi więcej.
+            await _context.SeenByUser.AddAsync(new SeenByUser()
+            {
+                TopicId = chosenTopic.Id,
+                UserId = user.Id
+            });
+            await _context.SaveChangesAsync();
 
             return _mapper.Map<TopicViewModel>(chosenTopic);
         }
@@ -139,7 +156,7 @@ namespace Topicly.Controllers
                 TopicAnswerer = user.Id,
                 TopicId = dbTopic.Id
             });
-            
+
             // zwiększenie PositiveCount dla tagów na potrzeby algorytmu proponowania tematu
             foreach (var tag in dbTopic.Tags.Split(";"))
             {
@@ -147,7 +164,7 @@ namespace Topicly.Controllers
                 {
                     continue;
                 }
-                
+
                 var reaction = _context.Reactions.FirstOrDefault(x => x.UserId == user.Id && x.Keyword == tag);
                 if (reaction == null)
                 {
@@ -164,7 +181,7 @@ namespace Topicly.Controllers
                     reaction.PositiveCount++;
                 }
             }
-            
+
             await _context.SaveChangesAsync();
 
             return Ok(addedChat.Entity.Id);
@@ -191,7 +208,7 @@ namespace Topicly.Controllers
                 {
                     continue;
                 }
-                
+
                 var reaction = _context.Reactions.FirstOrDefault(x => x.UserId == user.Id && x.Keyword == tag);
                 if (reaction == null)
                 {
