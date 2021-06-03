@@ -157,15 +157,40 @@ namespace Topicly.Controllers
         [HttpPost("RejectTopicProposal")]
         public async Task<ActionResult> RejectTopicProposal(int topicId)
         {
-            var user = GetCurrentUser();
-            if (await _context.Topics.AnyAsync(x => x.Id == topicId))
+            var user = await GetCurrentUser();
+            var dbTopic = await _context.Topics.FirstOrDefaultAsync(x => x.Id == topicId);
+            if (dbTopic == null)
             {
-                // TODO: zapisz wzmiankę o zdarzeniu w bazie 
-
-                return Ok();
+                return NotFound("Podany temat nie istnieje");
             }
 
-            return NotFound("Podany temat nie istnieje");
+            foreach (var tag in dbTopic.Tags.Split(";"))
+            {
+                if (tag == "")
+                {
+                    continue;
+                }
+                
+                var reaction = _context.Reactions.FirstOrDefault(x => x.UserId == user.Id && x.Keyword == tag);
+                if (reaction == null)
+                {
+                    await _context.Reactions.AddAsync(new UserReaction()
+                    {
+                        Keyword = tag,
+                        NegativeCount = 1,
+                        PositiveCount = 0,
+                        UserId = user.Id
+                    });
+                }
+                else
+                {
+                    reaction.NegativeCount++;
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         /// <summary>
