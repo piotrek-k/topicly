@@ -243,7 +243,8 @@ namespace Topicly.Controllers
             await _context.Topics.AddAsync(new Topic
             {
                 Name = topicCreationViewModel.Content,
-                CreatedBy = user.Id
+                CreatedBy = user.Id,
+                Tags = topicCreationViewModel.Tags
             });
             await _context.SaveChangesAsync();
 
