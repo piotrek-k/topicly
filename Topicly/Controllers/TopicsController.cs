@@ -158,27 +158,30 @@ namespace Topicly.Controllers
             });
 
             // zwiększenie PositiveCount dla tagów na potrzeby algorytmu proponowania tematu
-            foreach (var tag in dbTopic.Tags.Split(";"))
+            if (dbTopic.Tags != null)
             {
-                if (tag == "" || tag == null)
+                foreach (var tag in dbTopic.Tags.Split(";"))
                 {
-                    continue;
-                }
-
-                var reaction = _context.Reactions.FirstOrDefault(x => x.UserId == user.Id && x.Keyword == tag);
-                if (reaction == null)
-                {
-                    await _context.Reactions.AddAsync(new UserReaction()
+                    if (tag == "" || tag == null)
                     {
-                        Keyword = tag,
-                        NegativeCount = 0,
-                        PositiveCount = 1,
-                        UserId = user.Id
-                    });
-                }
-                else
-                {
-                    reaction.PositiveCount++;
+                        continue;
+                    }
+
+                    var reaction = _context.Reactions.FirstOrDefault(x => x.UserId == user.Id && x.Keyword == tag);
+                    if (reaction == null)
+                    {
+                        await _context.Reactions.AddAsync(new UserReaction()
+                        {
+                            Keyword = tag,
+                            NegativeCount = 0,
+                            PositiveCount = 1,
+                            UserId = user.Id
+                        });
+                    }
+                    else
+                    {
+                        reaction.PositiveCount++;
+                    }
                 }
             }
 
@@ -227,10 +230,10 @@ namespace Topicly.Controllers
                         reaction.NegativeCount++;
                     }
                 }
-                
+
                 await _context.SaveChangesAsync();
             }
-            
+
             return Ok();
         }
 

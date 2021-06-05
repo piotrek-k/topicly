@@ -28,6 +28,6 @@ namespace Data.Models.Topics
         /// Jako jeden ciąg znaków, oddzielone średnikiem
         /// Przykład: tag1;tag2;tag 3;
         /// </summary>
-        public string Tags { get; set; }
+        public string Tags { get; set; } = "";
     }
 }
