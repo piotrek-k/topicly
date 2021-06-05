@@ -3,6 +3,7 @@ version: "3.4"
 services:
   topicly_server:
     image: ${DOCKER_REGISTRY-}topicly_server
+    container_name: topicly_server
     depends_on:
       - db
     build:
@@ -20,6 +21,7 @@ services:
 
   db:
     image: "mcr.microsoft.com/mssql/server:2017-latest"
+    container_name: topicly_db
     ports:
       - "1433:1433"
     environment:

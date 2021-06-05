@@ -96,7 +96,7 @@ namespace Topicly.Controllers
                 Random rand = new Random();
                 double previousRates = 0;
                 var randNum = rand.NextDouble();
-                
+
                 foreach (var t in newTopicRank)
                 {
                     if (randNum >= previousRates && randNum < previousRates + t.Item2)
@@ -108,7 +108,7 @@ namespace Topicly.Controllers
                     previousRates += t.Item2;
                 }
             }
-            else if(topicRank.Count > 0)
+            else if (topicRank.Count > 0)
             {
                 // zostały same tematy o wskaźnikach 0
 
@@ -158,27 +158,30 @@ namespace Topicly.Controllers
             });
 
             // zwiększenie PositiveCount dla tagów na potrzeby algorytmu proponowania tematu
-            foreach (var tag in dbTopic.Tags.Split(";"))
+            if (dbTopic.Tags != null)
             {
-                if (tag == "" || tag == null)
+                foreach (var tag in dbTopic.Tags.Split(";"))
                 {
-                    continue;
-                }
-
-                var reaction = _context.Reactions.FirstOrDefault(x => x.UserId == user.Id && x.Keyword == tag);
-                if (reaction == null)
-                {
-                    await _context.Reactions.AddAsync(new UserReaction()
+                    if (tag == "" || tag == null)
                     {
-                        Keyword = tag,
-                        NegativeCount = 0,
-                        PositiveCount = 1,
-                        UserId = user.Id
-                    });
-                }
-                else
-                {
-                    reaction.PositiveCount++;
+                        continue;
+                    }
+
+                    var reaction = _context.Reactions.FirstOrDefault(x => x.UserId == user.Id && x.Keyword == tag);
+                    if (reaction == null)
+                    {
+                        await _context.Reactions.AddAsync(new UserReaction()
+                        {
+                            Keyword = tag,
+                            NegativeCount = 0,
+                            PositiveCount = 1,
+                            UserId = user.Id
+                        });
+                    }
+                    else
+                    {
+                        reaction.PositiveCount++;
+                    }
                 }
             }
 
@@ -202,31 +205,34 @@ namespace Topicly.Controllers
                 return NotFound("Podany temat nie istnieje");
             }
 
-            foreach (var tag in dbTopic.Tags.Split(";"))
+            if (dbTopic.Tags != null)
             {
-                if (tag == "")
+                foreach (var tag in dbTopic.Tags.Split(";"))
                 {
-                    continue;
-                }
-
-                var reaction = _context.Reactions.FirstOrDefault(x => x.UserId == user.Id && x.Keyword == tag);
-                if (reaction == null)
-                {
-                    await _context.Reactions.AddAsync(new UserReaction()
+                    if (tag == "")
                     {
-                        Keyword = tag,
-                        NegativeCount = 1,
-                        PositiveCount = 0,
-                        UserId = user.Id
-                    });
-                }
-                else
-                {
-                    reaction.NegativeCount++;
-                }
-            }
+                        continue;
+                    }
 
-            await _context.SaveChangesAsync();
+                    var reaction = _context.Reactions.FirstOrDefault(x => x.UserId == user.Id && x.Keyword == tag);
+                    if (reaction == null)
+                    {
+                        await _context.Reactions.AddAsync(new UserReaction()
+                        {
+                            Keyword = tag,
+                            NegativeCount = 1,
+                            PositiveCount = 0,
+                            UserId = user.Id
+                        });
+                    }
+                    else
+                    {
+                        reaction.NegativeCount++;
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+            }
 
             return Ok();
         }
