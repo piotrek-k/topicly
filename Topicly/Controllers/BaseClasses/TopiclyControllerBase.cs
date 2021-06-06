@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using Data.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,12 @@ namespace Topicly.Controllers.BaseClasses
 
             var user = await UserManager.FindByEmailAsync(userIdentity.Name);
             return user;
+        }
+
+        [NonAction]
+        public string GetCurrentUserId()
+        {
+            return HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
     }
 }

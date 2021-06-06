@@ -30,15 +30,17 @@ namespace Topicly.Controllers
             _logger = logger;
             _mapper = mapper;
         }
-        
+
         /// <summary>
         /// Lista czatów dla zalogowanego użytkownika
         /// </summary>
         [HttpGet("GetAllForCurrentUser")]
         public IEnumerable<ChatViewModel> GetChatsForUser()
         {
-            // TODO: Zwracać tylko czaty należące do użytkownika
-            var chats = _context.Chats.Include(x => x.Topic).ToList();
+            var chats = _context.Chats
+                .Include(x => x.Topic)
+                .Where(x => x.TopicAnswerer == GetCurrentUserId() || x.TopicCreator == GetCurrentUserId())
+                .ToList();
             return chats.Select(x => _mapper.Map<ChatViewModel>(x));
         }
     }
