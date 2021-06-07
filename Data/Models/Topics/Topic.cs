@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using Data.Models.Users;
 
 namespace Data.Models.Topics
 {
@@ -17,7 +19,10 @@ namespace Data.Models.Topics
         /// <summary>
         /// Identyfikator użytkownika który utworzył ten temat
         /// </summary>
-        public string CreatedBy { get; set; }
+        public string CreatedById { get; set; }
+        
+        [ForeignKey(nameof(CreatedById))]
+        public ApplicationUser CreatedBy { get; set; }
         
         /// <summary>
         /// Data utworzenia tematu

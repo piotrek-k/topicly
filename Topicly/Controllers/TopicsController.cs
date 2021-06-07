@@ -50,11 +50,11 @@ namespace Topicly.Controllers
 
             // Pobranie listy tematów z ostatnich 24h, które nie zostały jeszcze przeczytane przez użytkownika
             var topics =
-                (from t in _context.Set<Topic>()
+                (from t in _context.Set<Topic>().Include(x => x.CreatedBy)
                     from s in _context.Set<SeenByUser>().Where(x => x.TopicId == t.Id).DefaultIfEmpty()
                     where s == null &&
                           t.CreatedAt >= DateTimeOffset.Now.AddHours(-24) &&
-                          t.CreatedBy != userId
+                          t.CreatedById != userId
                     select t).ToList();
 
             var allReactionsCount = _context.Reactions
@@ -157,7 +157,7 @@ namespace Topicly.Controllers
             // utworzenie czatu
             var addedChat = await _context.Chats.AddAsync(new Chat()
             {
-                TopicCreatorId = dbTopic.CreatedBy,
+                TopicCreatorId = dbTopic.CreatedById,
                 TopicAnswererId = userId,
                 TopicId = dbTopic.Id
             });
@@ -195,7 +195,7 @@ namespace Topicly.Controllers
             return Ok(new
             {
                 chatId = addedChat.Entity.Id,
-                otherParticipantId = dbTopic.CreatedBy
+                otherParticipantId = dbTopic.CreatedById
             });
         }
 
@@ -258,7 +258,7 @@ namespace Topicly.Controllers
             await _context.Topics.AddAsync(new Topic
             {
                 Name = topicCreationViewModel.Content,
-                CreatedBy = userId,
+                CreatedById = userId,
                 Tags = topicCreationViewModel.Tags
             });
             await _context.SaveChangesAsync();

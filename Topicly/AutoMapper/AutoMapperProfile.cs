@@ -21,7 +21,9 @@ namespace Topicly.AutoMapper
                     opt => opt.MapFrom(src => src.Sender.UserName))
                 .ForMember(mvm => mvm.SenderUniqueId,
                     opt => opt.MapFrom(src => src.SenderId));
-            CreateMap<Topic, TopicViewModel>();
+            CreateMap<Topic, TopicViewModel>()
+                .ForMember(mvm => mvm.CreatedByName,
+                    opt => opt.MapFrom(src => src.CreatedBy.UserName));
             CreateMap<User_Request_SignUp, ApplicationUser>();
         }
     }

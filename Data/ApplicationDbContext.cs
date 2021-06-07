@@ -86,7 +86,7 @@ namespace Data
                 {
                     Id = y,
                     Name = "TEMAT #" + (y + 1),
-                    CreatedBy = y % 2 == 0 ? dbUser1 : dbUser2,
+                    CreatedById = y % 2 == 0 ? dbUser1 : dbUser2,
                     Tags = "tag" + r.Next(4)
                 });
 

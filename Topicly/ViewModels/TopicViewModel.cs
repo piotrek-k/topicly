@@ -15,6 +15,8 @@ namespace Topicly.ViewModels
         /// <summary>
         /// Identyfikator użytkownika który utworzył ten temat
         /// </summary>
-        public string CreatedBy { get; set; }
+        public string CreatedById { get; set; }
+        
+        public string CreatedByName { get; set; }
     }
 }
