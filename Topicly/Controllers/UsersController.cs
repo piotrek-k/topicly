@@ -35,13 +35,15 @@ namespace Topicly.Controllers
             if (result.Succeeded)
             {
                 await SignInManager.SignInAsync(newUser, new AuthenticationProperties { IsPersistent = req.RememberMe });
-            }
-            else
-            {
-                return BadRequest(result.Errors);
+                
+                return Ok(new User_Response_Login_Register()
+                {
+                    SenderId = newUser.Id,
+                    SenderName = newUser.UserName
+                });
             }
 
-            return Ok();
+            return BadRequest(result.Errors);
         }
 
         [HttpPost("sign-in")]
@@ -61,7 +63,11 @@ namespace Topicly.Controllers
             }
 
             await SignInManager.SignInAsync(user, req.RememberMe);
-            return Ok();
+            return Ok(new User_Response_Login_Register()
+            {
+                SenderId = user.Id,
+                SenderName = user.UserName
+            });
         }
 
         [HttpPost("sign-out")]
