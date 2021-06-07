@@ -46,7 +46,7 @@ namespace Topicly.Controllers
         [HttpGet("ProposeNext")]
         public async Task<ActionResult<TopicViewModel>> ProposeNext()
         {
-            var user = await GetCurrentUser();
+            var userId = GetCurrentUserId();
 
             // Pobranie listy tematów z ostatnich 24h, które nie zostały jeszcze przeczytane przez użytkownika
             var topics =
@@ -54,16 +54,16 @@ namespace Topicly.Controllers
                     from s in _context.Set<SeenByUser>().Where(x => x.TopicId == t.Id).DefaultIfEmpty()
                     where s == null &&
                           t.CreatedAt >= DateTimeOffset.Now.AddHours(-24) &&
-                          t.CreatedBy != user.Id
+                          t.CreatedBy != userId
                     select t).ToList();
 
             var allReactionsCount = _context.Reactions
-                .Where(x => x.UserId == user.Id)
+                .Where(x => x.UserId == userId)
                 .Sum(x => x.PositiveCount);
 
             // Obliczenie wskaźników dla tagów
             var tagStrength = (_context.Reactions
-                .Where(x => x.UserId == user.Id)
+                .Where(x => x.UserId == userId)
                 .Select(x => new
                     {Id = x.Id, Keyword = x.Keyword, Strength = x.PositiveCount / (float) allReactionsCount})).ToList();
 
@@ -125,7 +125,7 @@ namespace Topicly.Controllers
             await _context.SeenByUser.AddAsync(new SeenByUser()
             {
                 TopicId = chosenTopic.Id,
-                UserId = user.Id
+                UserId = userId
             });
             await _context.SaveChangesAsync();
 
@@ -147,13 +147,13 @@ namespace Topicly.Controllers
                 return NotFound("Podany temat nie istnieje");
             }
 
-            var user = await GetCurrentUser();
+            var userId = GetCurrentUserId();
 
             // utworzenie czatu
             var addedChat = await _context.Chats.AddAsync(new Chat()
             {
-                TopicCreator = dbTopic.CreatedBy,
-                TopicAnswerer = user.Id,
+                TopicCreatorId = dbTopic.CreatedBy,
+                TopicAnswererId = userId,
                 TopicId = dbTopic.Id
             });
 
@@ -167,7 +167,7 @@ namespace Topicly.Controllers
                         continue;
                     }
 
-                    var reaction = _context.Reactions.FirstOrDefault(x => x.UserId == user.Id && x.Keyword == tag);
+                    var reaction = _context.Reactions.FirstOrDefault(x => x.UserId == userId && x.Keyword == tag);
                     if (reaction == null)
                     {
                         await _context.Reactions.AddAsync(new UserReaction()
@@ -175,7 +175,7 @@ namespace Topicly.Controllers
                             Keyword = tag,
                             NegativeCount = 0,
                             PositiveCount = 1,
-                            UserId = user.Id
+                            UserId = userId
                         });
                     }
                     else
@@ -198,7 +198,7 @@ namespace Topicly.Controllers
         [HttpPost("RejectTopicProposal")]
         public async Task<ActionResult> RejectTopicProposal(int topicId)
         {
-            var user = await GetCurrentUser();
+            var userId = GetCurrentUserId();
             var dbTopic = await _context.Topics.FirstOrDefaultAsync(x => x.Id == topicId);
             if (dbTopic == null)
             {
@@ -214,7 +214,7 @@ namespace Topicly.Controllers
                         continue;
                     }
 
-                    var reaction = _context.Reactions.FirstOrDefault(x => x.UserId == user.Id && x.Keyword == tag);
+                    var reaction = _context.Reactions.FirstOrDefault(x => x.UserId == userId && x.Keyword == tag);
                     if (reaction == null)
                     {
                         await _context.Reactions.AddAsync(new UserReaction()
@@ -222,7 +222,7 @@ namespace Topicly.Controllers
                             Keyword = tag,
                             NegativeCount = 1,
                             PositiveCount = 0,
-                            UserId = user.Id
+                            UserId = userId
                         });
                     }
                     else
@@ -244,12 +244,12 @@ namespace Topicly.Controllers
         [HttpPost("CreateTopic")]
         public async Task<ActionResult> CreateTopic([FromBody] TopicCreationViewModel topicCreationViewModel)
         {
-            var user = await GetCurrentUser();
+            var userId = GetCurrentUserId();
 
             await _context.Topics.AddAsync(new Topic
             {
                 Name = topicCreationViewModel.Content,
-                CreatedBy = user.Id,
+                CreatedBy = userId,
                 Tags = topicCreationViewModel.Tags
             });
             await _context.SaveChangesAsync();

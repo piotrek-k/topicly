@@ -6,6 +6,7 @@ using Data.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Topicly.Controllers.BaseClasses;
 using Topicly.ViewModels;
@@ -38,8 +39,10 @@ namespace Topicly.Controllers
         [HttpGet("GetForChat/{chatId}")]
         public IEnumerable<MessageViewModel> GetMessagesForChat(int chatId)
         {
-            // TODO: Zwracać tylko wiadomości należące do czatu
-            return _context.Messages.Where(y => y.ChatId == chatId).Select(x => _mapper.Map<MessageViewModel>(x)).ToList();
+            return _context.Messages.Where(y => y.ChatId == chatId)
+                .Include(x => x.Sender)
+                .Select(x => _mapper.Map<MessageViewModel>(x))
+                .ToList();
         }
     }
 }

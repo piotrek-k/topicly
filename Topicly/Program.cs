@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Topicly.Data;
 
 namespace Topicly
 {
@@ -38,15 +37,6 @@ namespace Topicly
                         Thread.Sleep(2000);
                     }
                 } while (true);
-
-                try
-                {
-                    SeedData.Initialize(services);
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, "An error occurred seeding the DB");
-                }
             }
 
             host.Run();

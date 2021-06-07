@@ -4,14 +4,16 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210607135942_Seed_data")]
+    partial class Seed_data
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,20 +53,16 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("TopicAnswererId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("TopicAnswerer")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TopicCreatorId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("TopicCreator")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TopicId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TopicAnswererId");
-
-                    b.HasIndex("TopicCreatorId");
 
                     b.HasIndex("TopicId");
 
@@ -74,71 +72,71 @@ namespace Data.Migrations
                         new
                         {
                             Id = -1,
-                            TopicAnswererId = "c7b013f0-5201-4317-abd8-c211f91b7330",
-                            TopicCreatorId = "fab4fac1-c546-41de-aebc-a14da6895711",
+                            TopicAnswerer = "c7b013f0-5201-4317-abd8-c211f91b7330",
+                            TopicCreator = "fab4fac1-c546-41de-aebc-a14da6895711",
                             TopicId = -1
                         },
                         new
                         {
                             Id = -2,
-                            TopicAnswererId = "fab4fac1-c546-41de-aebc-a14da6895711",
-                            TopicCreatorId = "c7b013f0-5201-4317-abd8-c211f91b7330",
+                            TopicAnswerer = "fab4fac1-c546-41de-aebc-a14da6895711",
+                            TopicCreator = "c7b013f0-5201-4317-abd8-c211f91b7330",
                             TopicId = -2
                         },
                         new
                         {
                             Id = -3,
-                            TopicAnswererId = "c7b013f0-5201-4317-abd8-c211f91b7330",
-                            TopicCreatorId = "fab4fac1-c546-41de-aebc-a14da6895711",
+                            TopicAnswerer = "c7b013f0-5201-4317-abd8-c211f91b7330",
+                            TopicCreator = "fab4fac1-c546-41de-aebc-a14da6895711",
                             TopicId = -3
                         },
                         new
                         {
                             Id = -4,
-                            TopicAnswererId = "fab4fac1-c546-41de-aebc-a14da6895711",
-                            TopicCreatorId = "c7b013f0-5201-4317-abd8-c211f91b7330",
+                            TopicAnswerer = "fab4fac1-c546-41de-aebc-a14da6895711",
+                            TopicCreator = "c7b013f0-5201-4317-abd8-c211f91b7330",
                             TopicId = -4
                         },
                         new
                         {
                             Id = -5,
-                            TopicAnswererId = "c7b013f0-5201-4317-abd8-c211f91b7330",
-                            TopicCreatorId = "fab4fac1-c546-41de-aebc-a14da6895711",
+                            TopicAnswerer = "c7b013f0-5201-4317-abd8-c211f91b7330",
+                            TopicCreator = "fab4fac1-c546-41de-aebc-a14da6895711",
                             TopicId = -5
                         },
                         new
                         {
                             Id = -6,
-                            TopicAnswererId = "fab4fac1-c546-41de-aebc-a14da6895711",
-                            TopicCreatorId = "c7b013f0-5201-4317-abd8-c211f91b7330",
+                            TopicAnswerer = "fab4fac1-c546-41de-aebc-a14da6895711",
+                            TopicCreator = "c7b013f0-5201-4317-abd8-c211f91b7330",
                             TopicId = -6
                         },
                         new
                         {
                             Id = -7,
-                            TopicAnswererId = "c7b013f0-5201-4317-abd8-c211f91b7330",
-                            TopicCreatorId = "fab4fac1-c546-41de-aebc-a14da6895711",
+                            TopicAnswerer = "c7b013f0-5201-4317-abd8-c211f91b7330",
+                            TopicCreator = "fab4fac1-c546-41de-aebc-a14da6895711",
                             TopicId = -7
                         },
                         new
                         {
                             Id = -8,
-                            TopicAnswererId = "fab4fac1-c546-41de-aebc-a14da6895711",
-                            TopicCreatorId = "c7b013f0-5201-4317-abd8-c211f91b7330",
+                            TopicAnswerer = "fab4fac1-c546-41de-aebc-a14da6895711",
+                            TopicCreator = "c7b013f0-5201-4317-abd8-c211f91b7330",
                             TopicId = -8
                         },
                         new
                         {
                             Id = -9,
-                            TopicAnswererId = "c7b013f0-5201-4317-abd8-c211f91b7330",
-                            TopicCreatorId = "fab4fac1-c546-41de-aebc-a14da6895711",
+                            TopicAnswerer = "c7b013f0-5201-4317-abd8-c211f91b7330",
+                            TopicCreator = "fab4fac1-c546-41de-aebc-a14da6895711",
                             TopicId = -9
                         },
                         new
                         {
                             Id = -10,
-                            TopicAnswererId = "fab4fac1-c546-41de-aebc-a14da6895711",
-                            TopicCreatorId = "c7b013f0-5201-4317-abd8-c211f91b7330",
+                            TopicAnswerer = "fab4fac1-c546-41de-aebc-a14da6895711",
+                            TopicCreator = "c7b013f0-5201-4317-abd8-c211f91b7330",
                             TopicId = -10
                         });
                 });
@@ -160,13 +158,11 @@ namespace Data.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("SenderId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ChatId");
-
-                    b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
 
@@ -176,7 +172,7 @@ namespace Data.Migrations
                             Id = -11,
                             ChatId = -1,
                             Content = "this is test message #-1",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 135, DateTimeKind.Unspecified).AddTicks(8885), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 455, DateTimeKind.Unspecified).AddTicks(8687), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -184,7 +180,7 @@ namespace Data.Migrations
                             Id = -12,
                             ChatId = -1,
                             Content = "this is test message #-2",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(330), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 455, DateTimeKind.Unspecified).AddTicks(9955), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -192,7 +188,7 @@ namespace Data.Migrations
                             Id = -13,
                             ChatId = -1,
                             Content = "this is test message #-3",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(407), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(7), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -200,7 +196,7 @@ namespace Data.Migrations
                             Id = -14,
                             ChatId = -1,
                             Content = "this is test message #-4",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(444), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(38), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -208,7 +204,7 @@ namespace Data.Migrations
                             Id = -15,
                             ChatId = -1,
                             Content = "this is test message #-5",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(477), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(66), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -216,7 +212,7 @@ namespace Data.Migrations
                             Id = -16,
                             ChatId = -1,
                             Content = "this is test message #-6",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(519), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(99), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -224,7 +220,7 @@ namespace Data.Migrations
                             Id = -17,
                             ChatId = -1,
                             Content = "this is test message #-7",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(552), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(125), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -232,7 +228,7 @@ namespace Data.Migrations
                             Id = -18,
                             ChatId = -1,
                             Content = "this is test message #-8",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(587), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(151), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -240,7 +236,7 @@ namespace Data.Migrations
                             Id = -19,
                             ChatId = -1,
                             Content = "this is test message #-9",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(619), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(177), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -248,7 +244,7 @@ namespace Data.Migrations
                             Id = -20,
                             ChatId = -1,
                             Content = "this is test message #-10",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(656), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(206), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -256,7 +252,7 @@ namespace Data.Migrations
                             Id = -21,
                             ChatId = -2,
                             Content = "this is test message #-1",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(789), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(391), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -264,7 +260,7 @@ namespace Data.Migrations
                             Id = -22,
                             ChatId = -2,
                             Content = "this is test message #-2",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(821), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(419), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -272,7 +268,7 @@ namespace Data.Migrations
                             Id = -23,
                             ChatId = -2,
                             Content = "this is test message #-3",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(953), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(444), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -280,7 +276,7 @@ namespace Data.Migrations
                             Id = -24,
                             ChatId = -2,
                             Content = "this is test message #-4",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1001), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(469), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -288,7 +284,7 @@ namespace Data.Migrations
                             Id = -25,
                             ChatId = -2,
                             Content = "this is test message #-5",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1032), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(495), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -296,7 +292,7 @@ namespace Data.Migrations
                             Id = -26,
                             ChatId = -2,
                             Content = "this is test message #-6",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1064), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(520), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -304,7 +300,7 @@ namespace Data.Migrations
                             Id = -27,
                             ChatId = -2,
                             Content = "this is test message #-7",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1096), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(545), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -312,7 +308,7 @@ namespace Data.Migrations
                             Id = -28,
                             ChatId = -2,
                             Content = "this is test message #-8",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1132), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(573), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -320,7 +316,7 @@ namespace Data.Migrations
                             Id = -29,
                             ChatId = -2,
                             Content = "this is test message #-9",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1164), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(598), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -328,7 +324,7 @@ namespace Data.Migrations
                             Id = -30,
                             ChatId = -2,
                             Content = "this is test message #-10",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1196), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(623), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -336,7 +332,7 @@ namespace Data.Migrations
                             Id = -31,
                             ChatId = -3,
                             Content = "this is test message #-1",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1293), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(697), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -344,7 +340,7 @@ namespace Data.Migrations
                             Id = -32,
                             ChatId = -3,
                             Content = "this is test message #-2",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1326), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(723), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -352,7 +348,7 @@ namespace Data.Migrations
                             Id = -33,
                             ChatId = -3,
                             Content = "this is test message #-3",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1359), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(748), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -360,7 +356,7 @@ namespace Data.Migrations
                             Id = -34,
                             ChatId = -3,
                             Content = "this is test message #-4",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1391), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(815), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -368,7 +364,7 @@ namespace Data.Migrations
                             Id = -35,
                             ChatId = -3,
                             Content = "this is test message #-5",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1423), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(955), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -376,7 +372,7 @@ namespace Data.Migrations
                             Id = -36,
                             ChatId = -3,
                             Content = "this is test message #-6",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1459), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(984), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -384,7 +380,7 @@ namespace Data.Migrations
                             Id = -37,
                             ChatId = -3,
                             Content = "this is test message #-7",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1543), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1012), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -392,7 +388,7 @@ namespace Data.Migrations
                             Id = -38,
                             ChatId = -3,
                             Content = "this is test message #-8",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1580), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1041), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -400,7 +396,7 @@ namespace Data.Migrations
                             Id = -39,
                             ChatId = -3,
                             Content = "this is test message #-9",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1613), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1069), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -408,7 +404,7 @@ namespace Data.Migrations
                             Id = -40,
                             ChatId = -3,
                             Content = "this is test message #-10",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1645), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1098), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -416,7 +412,7 @@ namespace Data.Migrations
                             Id = -41,
                             ChatId = -4,
                             Content = "this is test message #-1",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1738), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1179), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -424,7 +420,7 @@ namespace Data.Migrations
                             Id = -42,
                             ChatId = -4,
                             Content = "this is test message #-2",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1770), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1208), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -432,7 +428,7 @@ namespace Data.Migrations
                             Id = -43,
                             ChatId = -4,
                             Content = "this is test message #-3",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1802), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1236), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -440,7 +436,7 @@ namespace Data.Migrations
                             Id = -44,
                             ChatId = -4,
                             Content = "this is test message #-4",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1836), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1267), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -448,7 +444,7 @@ namespace Data.Migrations
                             Id = -45,
                             ChatId = -4,
                             Content = "this is test message #-5",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1868), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1295), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -456,7 +452,7 @@ namespace Data.Migrations
                             Id = -46,
                             ChatId = -4,
                             Content = "this is test message #-6",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1900), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1324), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -464,7 +460,7 @@ namespace Data.Migrations
                             Id = -47,
                             ChatId = -4,
                             Content = "this is test message #-7",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1933), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1351), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -472,7 +468,7 @@ namespace Data.Migrations
                             Id = -48,
                             ChatId = -4,
                             Content = "this is test message #-8",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1964), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1544), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -480,7 +476,7 @@ namespace Data.Migrations
                             Id = -49,
                             ChatId = -4,
                             Content = "this is test message #-9",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1996), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1576), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -488,7 +484,7 @@ namespace Data.Migrations
                             Id = -50,
                             ChatId = -4,
                             Content = "this is test message #-10",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2076), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1606), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -496,7 +492,7 @@ namespace Data.Migrations
                             Id = -51,
                             ChatId = -5,
                             Content = "this is test message #-1",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2178), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1694), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -504,7 +500,7 @@ namespace Data.Migrations
                             Id = -52,
                             ChatId = -5,
                             Content = "this is test message #-2",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2210), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1723), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -512,7 +508,7 @@ namespace Data.Migrations
                             Id = -53,
                             ChatId = -5,
                             Content = "this is test message #-3",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2241), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1751), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -520,7 +516,7 @@ namespace Data.Migrations
                             Id = -54,
                             ChatId = -5,
                             Content = "this is test message #-4",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2273), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1871), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -528,7 +524,7 @@ namespace Data.Migrations
                             Id = -55,
                             ChatId = -5,
                             Content = "this is test message #-5",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2304), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1898), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -536,7 +532,7 @@ namespace Data.Migrations
                             Id = -56,
                             ChatId = -5,
                             Content = "this is test message #-6",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2336), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1923), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -544,7 +540,7 @@ namespace Data.Migrations
                             Id = -57,
                             ChatId = -5,
                             Content = "this is test message #-7",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2367), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1949), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -552,7 +548,7 @@ namespace Data.Migrations
                             Id = -58,
                             ChatId = -5,
                             Content = "this is test message #-8",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2399), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1975), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -560,7 +556,7 @@ namespace Data.Migrations
                             Id = -59,
                             ChatId = -5,
                             Content = "this is test message #-9",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2430), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2000), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -568,7 +564,7 @@ namespace Data.Migrations
                             Id = -60,
                             ChatId = -5,
                             Content = "this is test message #-10",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2463), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2025), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -576,7 +572,7 @@ namespace Data.Migrations
                             Id = -61,
                             ChatId = -6,
                             Content = "this is test message #-1",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2551), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2142), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -584,7 +580,7 @@ namespace Data.Migrations
                             Id = -62,
                             ChatId = -6,
                             Content = "this is test message #-2",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2640), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2168), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -592,7 +588,7 @@ namespace Data.Migrations
                             Id = -63,
                             ChatId = -6,
                             Content = "this is test message #-3",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2676), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2194), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -600,7 +596,7 @@ namespace Data.Migrations
                             Id = -64,
                             ChatId = -6,
                             Content = "this is test message #-4",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2708), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2219), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -608,7 +604,7 @@ namespace Data.Migrations
                             Id = -65,
                             ChatId = -6,
                             Content = "this is test message #-5",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2740), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2244), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -616,7 +612,7 @@ namespace Data.Migrations
                             Id = -66,
                             ChatId = -6,
                             Content = "this is test message #-6",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2774), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2270), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -624,7 +620,7 @@ namespace Data.Migrations
                             Id = -67,
                             ChatId = -6,
                             Content = "this is test message #-7",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2805), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2295), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -632,7 +628,7 @@ namespace Data.Migrations
                             Id = -68,
                             ChatId = -6,
                             Content = "this is test message #-8",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2837), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2320), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -640,7 +636,7 @@ namespace Data.Migrations
                             Id = -69,
                             ChatId = -6,
                             Content = "this is test message #-9",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2869), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2345), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -648,7 +644,7 @@ namespace Data.Migrations
                             Id = -70,
                             ChatId = -6,
                             Content = "this is test message #-10",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2901), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2370), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -656,7 +652,7 @@ namespace Data.Migrations
                             Id = -71,
                             ChatId = -7,
                             Content = "this is test message #-1",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2994), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2440), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -664,7 +660,7 @@ namespace Data.Migrations
                             Id = -72,
                             ChatId = -7,
                             Content = "this is test message #-2",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3026), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2465), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -672,7 +668,7 @@ namespace Data.Migrations
                             Id = -73,
                             ChatId = -7,
                             Content = "this is test message #-3",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3059), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2490), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -680,7 +676,7 @@ namespace Data.Migrations
                             Id = -74,
                             ChatId = -7,
                             Content = "this is test message #-4",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3091), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2557), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -688,7 +684,7 @@ namespace Data.Migrations
                             Id = -75,
                             ChatId = -7,
                             Content = "this is test message #-5",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3123), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2587), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -696,7 +692,7 @@ namespace Data.Migrations
                             Id = -76,
                             ChatId = -7,
                             Content = "this is test message #-6",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3331), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2614), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -704,7 +700,7 @@ namespace Data.Migrations
                             Id = -77,
                             ChatId = -7,
                             Content = "this is test message #-7",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3368), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2640), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -712,7 +708,7 @@ namespace Data.Migrations
                             Id = -78,
                             ChatId = -7,
                             Content = "this is test message #-8",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3400), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2665), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -720,7 +716,7 @@ namespace Data.Migrations
                             Id = -79,
                             ChatId = -7,
                             Content = "this is test message #-9",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3432), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2690), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -728,7 +724,7 @@ namespace Data.Migrations
                             Id = -80,
                             ChatId = -7,
                             Content = "this is test message #-10",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3465), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2716), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -736,7 +732,7 @@ namespace Data.Migrations
                             Id = -81,
                             ChatId = -8,
                             Content = "this is test message #-1",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3558), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2786), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -744,7 +740,7 @@ namespace Data.Migrations
                             Id = -82,
                             ChatId = -8,
                             Content = "this is test message #-2",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3591), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2811), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -752,7 +748,7 @@ namespace Data.Migrations
                             Id = -83,
                             ChatId = -8,
                             Content = "this is test message #-3",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3622), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2837), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -760,7 +756,7 @@ namespace Data.Migrations
                             Id = -84,
                             ChatId = -8,
                             Content = "this is test message #-4",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3654), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2863), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -768,7 +764,7 @@ namespace Data.Migrations
                             Id = -85,
                             ChatId = -8,
                             Content = "this is test message #-5",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3686), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2888), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -776,7 +772,7 @@ namespace Data.Migrations
                             Id = -86,
                             ChatId = -8,
                             Content = "this is test message #-6",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3718), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2913), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -784,7 +780,7 @@ namespace Data.Migrations
                             Id = -87,
                             ChatId = -8,
                             Content = "this is test message #-7",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3750), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3008), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -792,7 +788,7 @@ namespace Data.Migrations
                             Id = -88,
                             ChatId = -8,
                             Content = "this is test message #-8",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3834), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3036), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -800,7 +796,7 @@ namespace Data.Migrations
                             Id = -89,
                             ChatId = -8,
                             Content = "this is test message #-9",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3870), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3062), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -808,7 +804,7 @@ namespace Data.Migrations
                             Id = -90,
                             ChatId = -8,
                             Content = "this is test message #-10",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3901), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3088), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -816,7 +812,7 @@ namespace Data.Migrations
                             Id = -91,
                             ChatId = -9,
                             Content = "this is test message #-1",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3996), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3164), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -824,7 +820,7 @@ namespace Data.Migrations
                             Id = -92,
                             ChatId = -9,
                             Content = "this is test message #-2",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4028), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3189), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -832,7 +828,7 @@ namespace Data.Migrations
                             Id = -93,
                             ChatId = -9,
                             Content = "this is test message #-3",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4059), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3214), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -840,7 +836,7 @@ namespace Data.Migrations
                             Id = -94,
                             ChatId = -9,
                             Content = "this is test message #-4",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4127), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3265), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -848,7 +844,7 @@ namespace Data.Migrations
                             Id = -95,
                             ChatId = -9,
                             Content = "this is test message #-5",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4160), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3291), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -856,7 +852,7 @@ namespace Data.Migrations
                             Id = -96,
                             ChatId = -9,
                             Content = "this is test message #-6",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4192), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3317), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -864,7 +860,7 @@ namespace Data.Migrations
                             Id = -97,
                             ChatId = -9,
                             Content = "this is test message #-7",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4224), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3342), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -872,7 +868,7 @@ namespace Data.Migrations
                             Id = -98,
                             ChatId = -9,
                             Content = "this is test message #-8",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4257), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3368), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -880,7 +876,7 @@ namespace Data.Migrations
                             Id = -99,
                             ChatId = -9,
                             Content = "this is test message #-9",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4289), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3394), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -888,7 +884,7 @@ namespace Data.Migrations
                             Id = -100,
                             ChatId = -9,
                             Content = "this is test message #-10",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4321), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3420), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -896,7 +892,7 @@ namespace Data.Migrations
                             Id = -101,
                             ChatId = -10,
                             Content = "this is test message #-1",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4489), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3535), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -904,7 +900,7 @@ namespace Data.Migrations
                             Id = -102,
                             ChatId = -10,
                             Content = "this is test message #-2",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4522), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3561), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -912,7 +908,7 @@ namespace Data.Migrations
                             Id = -103,
                             ChatId = -10,
                             Content = "this is test message #-3",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4554), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3586), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -920,7 +916,7 @@ namespace Data.Migrations
                             Id = -104,
                             ChatId = -10,
                             Content = "this is test message #-4",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4585), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3612), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -928,7 +924,7 @@ namespace Data.Migrations
                             Id = -105,
                             ChatId = -10,
                             Content = "this is test message #-5",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4617), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3637), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -936,7 +932,7 @@ namespace Data.Migrations
                             Id = -106,
                             ChatId = -10,
                             Content = "this is test message #-6",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4648), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3663), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -944,7 +940,7 @@ namespace Data.Migrations
                             Id = -107,
                             ChatId = -10,
                             Content = "this is test message #-7",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4680), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3689), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -952,7 +948,7 @@ namespace Data.Migrations
                             Id = -108,
                             ChatId = -10,
                             Content = "this is test message #-8",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4711), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3714), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         },
                         new
@@ -960,7 +956,7 @@ namespace Data.Migrations
                             Id = -109,
                             ChatId = -10,
                             Content = "this is test message #-9",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4743), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3740), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "c7b013f0-5201-4317-abd8-c211f91b7330"
                         },
                         new
@@ -968,7 +964,7 @@ namespace Data.Migrations
                             Id = -110,
                             ChatId = -10,
                             Content = "this is test message #-10",
-                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4775), new TimeSpan(0, 2, 0, 0, 0)),
+                            DateOfSending = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3765), new TimeSpan(0, 2, 0, 0, 0)),
                             SenderId = "fab4fac1-c546-41de-aebc-a14da6895711"
                         });
                 });
@@ -1020,7 +1016,7 @@ namespace Data.Migrations
                         new
                         {
                             Id = -1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 129, DateTimeKind.Unspecified).AddTicks(2780), new TimeSpan(0, 2, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 450, DateTimeKind.Unspecified).AddTicks(3700), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "c7b013f0-5201-4317-abd8-c211f91b7330",
                             Name = "TEMAT #0",
                             Tags = "tag2"
@@ -1028,55 +1024,55 @@ namespace Data.Migrations
                         new
                         {
                             Id = -2,
-                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(702), new TimeSpan(0, 2, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(240), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "fab4fac1-c546-41de-aebc-a14da6895711",
                             Name = "TEMAT #-1",
-                            Tags = "tag2"
-                        },
-                        new
-                        {
-                            Id = -3,
-                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1227), new TimeSpan(0, 2, 0, 0, 0)),
-                            CreatedBy = "c7b013f0-5201-4317-abd8-c211f91b7330",
-                            Name = "TEMAT #-2",
                             Tags = "tag0"
                         },
                         new
                         {
+                            Id = -3,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(647), new TimeSpan(0, 2, 0, 0, 0)),
+                            CreatedBy = "c7b013f0-5201-4317-abd8-c211f91b7330",
+                            Name = "TEMAT #-2",
+                            Tags = "tag3"
+                        },
+                        new
+                        {
                             Id = -4,
-                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(1675), new TimeSpan(0, 2, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1125), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "fab4fac1-c546-41de-aebc-a14da6895711",
                             Name = "TEMAT #-3",
-                            Tags = "tag3"
+                            Tags = "tag2"
                         },
                         new
                         {
                             Id = -5,
-                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2110), new TimeSpan(0, 2, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(1634), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "c7b013f0-5201-4317-abd8-c211f91b7330",
                             Name = "TEMAT #-4",
-                            Tags = "tag1"
-                        },
-                        new
-                        {
-                            Id = -6,
-                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2492), new TimeSpan(0, 2, 0, 0, 0)),
-                            CreatedBy = "fab4fac1-c546-41de-aebc-a14da6895711",
-                            Name = "TEMAT #-5",
-                            Tags = "tag1"
-                        },
-                        new
-                        {
-                            Id = -7,
-                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(2932), new TimeSpan(0, 2, 0, 0, 0)),
-                            CreatedBy = "c7b013f0-5201-4317-abd8-c211f91b7330",
-                            Name = "TEMAT #-6",
                             Tags = "tag3"
                         },
                         new
                         {
+                            Id = -6,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2048), new TimeSpan(0, 2, 0, 0, 0)),
+                            CreatedBy = "fab4fac1-c546-41de-aebc-a14da6895711",
+                            Name = "TEMAT #-5",
+                            Tags = "tag3"
+                        },
+                        new
+                        {
+                            Id = -7,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2394), new TimeSpan(0, 2, 0, 0, 0)),
+                            CreatedBy = "c7b013f0-5201-4317-abd8-c211f91b7330",
+                            Name = "TEMAT #-6",
+                            Tags = "tag2"
+                        },
+                        new
+                        {
                             Id = -8,
-                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3496), new TimeSpan(0, 2, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(2739), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "fab4fac1-c546-41de-aebc-a14da6895711",
                             Name = "TEMAT #-7",
                             Tags = "tag0"
@@ -1084,15 +1080,15 @@ namespace Data.Migrations
                         new
                         {
                             Id = -9,
-                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(3931), new TimeSpan(0, 2, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3112), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "c7b013f0-5201-4317-abd8-c211f91b7330",
                             Name = "TEMAT #-8",
-                            Tags = "tag1"
+                            Tags = "tag3"
                         },
                         new
                         {
                             Id = -10,
-                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 16, 20, 21, 136, DateTimeKind.Unspecified).AddTicks(4352), new TimeSpan(0, 2, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 7, 15, 59, 41, 456, DateTimeKind.Unspecified).AddTicks(3486), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "fab4fac1-c546-41de-aebc-a14da6895711",
                             Name = "TEMAT #-9",
                             Tags = "tag2"
@@ -1168,15 +1164,15 @@ namespace Data.Migrations
                         {
                             Id = "fab4fac1-c546-41de-aebc-a14da6895711",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fbf94366-19a1-4041-bbef-39243ba92a07",
+                            ConcurrencyStamp = "e842d1cd-7ed9-4763-b46d-2cc89a9fcd11",
                             Email = "bob@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "BOB@MAIL.COM",
                             NormalizedUserName = "BOB",
-                            PasswordHash = "AQAAAAEAACcQAAAAECMFqckmlKazDSMMcW/D8AX99L2+Re9VCJD+cco+VBFyMNqHRUq98nHs2eZ07bv0gA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECOLJmflT1ZahWptTeR8G3am9xWlAnk7C8wLDU0O01ImFpSPSvylUYGniY584K/k0w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5858738b-6afb-408c-915c-3b0937bb171d",
+                            SecurityStamp = "704f96c1-43f1-4ea8-9a54-060494d6fe9d",
                             TwoFactorEnabled = false,
                             UserName = "bob"
                         },
@@ -1184,15 +1180,15 @@ namespace Data.Migrations
                         {
                             Id = "c7b013f0-5201-4317-abd8-c211f91b7330",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "70fbb3fc-d7f6-4382-9349-5cac37e75682",
+                            ConcurrencyStamp = "ae2af2eb-915f-4f28-a8b9-1af728ce4c0d",
                             Email = "alice@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ALICE@MAIL.COM",
                             NormalizedUserName = "ALICE",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJvvtrV40+MVB5YBg+Fx5mIqMPnWyw7TcExuAOYJdchnz+FIY4zeK26ZN4AIR+QhMQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECUs9c9M1urZRg/BLjluPTALuUGurDu6MCuL2SeZli6vh2ROflWmxuzb1jQQd2ig+g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "33d511eb-a500-4131-9738-0223a4d5410f",
+                            SecurityStamp = "54232939-1091-485d-8c3b-aed3c4991933",
                             TwoFactorEnabled = false,
                             UserName = "alice"
                         });
@@ -1438,14 +1434,6 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.Chats.Chat", b =>
                 {
-                    b.HasOne("Data.Models.Users.ApplicationUser", "TopicAnswerer")
-                        .WithMany()
-                        .HasForeignKey("TopicAnswererId");
-
-                    b.HasOne("Data.Models.Users.ApplicationUser", "TopicCreator")
-                        .WithMany()
-                        .HasForeignKey("TopicCreatorId");
-
                     b.HasOne("Data.Models.Topics.Topic", "Topic")
                         .WithMany()
                         .HasForeignKey("TopicId")
@@ -1453,10 +1441,6 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Topic");
-
-                    b.Navigation("TopicAnswerer");
-
-                    b.Navigation("TopicCreator");
                 });
 
             modelBuilder.Entity("Data.Models.Chats.Message", b =>
@@ -1467,13 +1451,7 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Data.Models.Users.ApplicationUser", "Sender")
-                        .WithMany()
-                        .HasForeignKey("SenderId");
-
                     b.Navigation("Chat");
-
-                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Data.Models.Topics.SeenByUser", b =>
