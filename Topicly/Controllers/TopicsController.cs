@@ -192,7 +192,11 @@ namespace Topicly.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(addedChat.Entity.Id);
+            return Ok(new
+            {
+                chatId = addedChat.Entity.Id,
+                otherParticipantId = dbTopic.CreatedBy
+            });
         }
 
         /// <summary>

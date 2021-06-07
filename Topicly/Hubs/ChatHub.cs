@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Data;
 using Data.Models.Chats;
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
@@ -21,6 +22,13 @@ namespace Topicly.Hubs
 
         public override async Task OnConnectedAsync()
         {
+            await UpdateChatSubscriptions(null);
+
+            await base.OnConnectedAsync();
+        }
+
+        public async Task UpdateChatSubscriptions(string otherParticipantId)
+        {
             // Pobieram listę czatów użytkownika i automatycznie nasłuchuję aktualizacji każdego z nich
             foreach (var chat in _context.Chats.Where(x =>
                 x.TopicCreatorId == Context.UserIdentifier || x.TopicAnswererId == Context.UserIdentifier))
@@ -29,7 +37,8 @@ namespace Topicly.Hubs
                 _logger.LogInformation($"Added user {Context.UserIdentifier} to group {ConstructChatGroupId(chat.Id)}");
             }
 
-            await base.OnConnectedAsync();
+            if (otherParticipantId != null)
+                await Clients.Users(otherParticipantId).SendAsync("requestChatListUpdate");
         }
 
         public async Task SendMessage(string message, int chatId)
