@@ -61,6 +61,11 @@ namespace Topicly.Controllers
                 .Where(x => x.UserId == userId)
                 .Sum(x => x.PositiveCount);
 
+            if (allReactionsCount == 0)
+            {
+                allReactionsCount = 1;
+            }
+
             // Obliczenie wskaźników dla tagów
             var tagStrength = (_context.Reactions
                 .Where(x => x.UserId == userId)
