@@ -42,6 +42,12 @@ Baza nasłuchuje na porcie `1433`. Connection string znajduje się w `appsetting
 Usunąć ją:
 
 ```bash
+docker-compose rm
+```
+
+lub
+
+```bash
 # Wyświetlić utworzone kontenery
 docker ps -a
 
@@ -54,3 +60,28 @@ docker rm b1461a50f71e
 ```
 
 Przy następnym uruchomieniu baza utworzy się na nowo.
+
+## Inne
+
+Migracje:
+```
+~/RiderProjects/topicly/Data$ dotnet ef --startup-project ../Topicly/ migrations add Seed_data
+```
+
+Logowanie (endpoint `sign-in`)
+
+```
+{
+  "email": "bob@mail.com",
+  "password": "Password1!",
+  "rememberMe": true
+}
+```
+
+```
+{
+  "email": "alice@mail.com",
+  "password": "Password1!",
+  "rememberMe": true
+}
+```
