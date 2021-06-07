@@ -25,7 +25,7 @@ namespace Topicly.Controllers.BaseClasses
                 return null;
             }
 
-            var user = await UserManager.FindByEmailAsync(userIdentity.Name);
+            var user = await UserManager.FindByNameAsync(userIdentity.Name);
             return user;
         }
 
