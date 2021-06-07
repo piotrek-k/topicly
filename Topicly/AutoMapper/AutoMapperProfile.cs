@@ -11,8 +11,16 @@ namespace Topicly.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<Chat, ChatViewModel>();
-            CreateMap<Message, MessageViewModel>();
+            CreateMap<Chat, ChatViewModel>()
+                .ForMember(mvm => mvm.TopicCreatorName,
+                    opt => opt.MapFrom(src => src.TopicCreator.UserName))
+                .ForMember(mvm => mvm.TopicAnswererName,
+                    opt => opt.MapFrom(src => src.TopicAnswerer.UserName));
+            CreateMap<Message, MessageViewModel>()
+                .ForMember(mvm => mvm.SenderHumanReadableName,
+                    opt => opt.MapFrom(src => src.Sender.UserName))
+                .ForMember(mvm => mvm.SenderUniqueId,
+                    opt => opt.MapFrom(src => src.SenderId));
             CreateMap<Topic, TopicViewModel>();
             CreateMap<User_Request_SignUp, ApplicationUser>();
         }

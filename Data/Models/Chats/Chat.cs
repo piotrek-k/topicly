@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Data.Models.Topics;
+using Data.Models.Users;
 
 namespace Data.Models.Chats
 {
@@ -13,12 +14,16 @@ namespace Data.Models.Chats
         /// <summary>
         /// Identyfikator osoby proponującej temat
         /// </summary>
-        public string TopicCreator { get; set; }
+        public string TopicCreatorId { get; set; }
+        [ForeignKey(nameof(TopicCreatorId))]
+        public ApplicationUser TopicCreator { get; set; }
 
         /// <summary>
         /// Identyfikator osoby która odpowiedziała na propozycję rozmowy
         /// </summary>
-        public string TopicAnswerer { get; set; }
+        public string TopicAnswererId { get; set; }
+        [ForeignKey(nameof(TopicAnswererId))]
+        public ApplicationUser TopicAnswerer { get; set; }
         
         public int TopicId { get; set; }
 

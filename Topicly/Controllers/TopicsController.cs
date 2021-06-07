@@ -152,8 +152,8 @@ namespace Topicly.Controllers
             // utworzenie czatu
             var addedChat = await _context.Chats.AddAsync(new Chat()
             {
-                TopicCreator = dbTopic.CreatedBy,
-                TopicAnswerer = userId,
+                TopicCreatorId = dbTopic.CreatedBy,
+                TopicAnswererId = userId,
                 TopicId = dbTopic.Id
             });
 

@@ -94,8 +94,8 @@ namespace Data
                 {
                     Id = y,
                     TopicId = y,
-                    TopicAnswerer = y % 2 == 0 ? dbUser1 : dbUser2,
-                    TopicCreator = y % 2 == 0 ? dbUser2 : dbUser1
+                    TopicAnswererId = y % 2 == 0 ? dbUser1 : dbUser2,
+                    TopicCreatorId = y % 2 == 0 ? dbUser2 : dbUser1
                 });
             
                 for (int x = -1; x >= -10; x--)
