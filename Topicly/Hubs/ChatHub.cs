@@ -23,7 +23,7 @@ namespace Topicly.Hubs
         {
             // Pobieram listę czatów użytkownika i automatycznie nasłuchuję aktualizacji każdego z nich
             foreach (var chat in _context.Chats.Where(x =>
-                x.TopicCreator == Context.UserIdentifier || x.TopicAnswerer == Context.UserIdentifier))
+                x.TopicCreatorId == Context.UserIdentifier || x.TopicAnswererId == Context.UserIdentifier))
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, ConstructChatGroupId(chat.Id));
                 _logger.LogInformation($"Added user {Context.UserIdentifier} to group {ConstructChatGroupId(chat.Id)}");
@@ -36,29 +36,37 @@ namespace Topicly.Hubs
         {
             var chatInDb = await _context.Chats.FindAsync(chatId);
             var senderId = Context.UserIdentifier;
-
-            if (chatInDb == null)
+            if (Context.User?.Identity != null)
             {
-                throw new HubException($"Nie ma takiego czatu: chatId = ({chatId})");
+                var senderName = Context.User.Identity.Name;
+
+                if (chatInDb == null)
+                {
+                    throw new HubException($"Nie ma takiego czatu: chatId = ({chatId})");
+                }
+
+                if (chatInDb.TopicAnswererId != senderId && chatInDb.TopicCreatorId != senderId)
+                {
+                    throw new HubException($"Użytkownik nie ma uprawnień do czatu: chatId = ({chatId})");
+                }
+
+                var receivedMessageAt = DateTimeOffset.Now;
+                await _context.Messages.AddAsync(new Message()
+                {
+                    ChatId = chatId,
+                    Content = message,
+                    SenderId = Context.UserIdentifier,
+                    DateOfSending = receivedMessageAt
+                });
+                await _context.SaveChangesAsync();
+
+                await Clients.Group(ConstructChatGroupId(chatId))
+                    .SendAsync("sendMessage", senderId, senderName, message, chatId, receivedMessageAt);
             }
-
-            if (chatInDb.TopicAnswerer != senderId && chatInDb.TopicCreator != senderId)
+            else
             {
-                throw new HubException($"Użytkownik nie ma uprawnień do czatu: chatId = ({chatId})");
+                throw new Exception("Brak danych o użytkowniku");
             }
-
-            var receivedMessageAt = DateTimeOffset.Now;
-            await _context.Messages.AddAsync(new Message()
-            {
-                ChatId = chatId,
-                Content = message,
-                SenderId = Context.UserIdentifier,
-                DateOfSending = receivedMessageAt
-            });
-            await _context.SaveChangesAsync();
-
-            await Clients.Group(ConstructChatGroupId(chatId))
-                .SendAsync("sendMessage", senderId, message, chatId, receivedMessageAt);
         }
 
         private string ConstructChatGroupId(int id)
