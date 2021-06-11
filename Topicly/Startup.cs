@@ -12,10 +12,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Topicly.AutoMapper;
 using Topicly.Hubs;
+using Topicly.Services;
 
 namespace Topicly
 {
@@ -52,14 +52,8 @@ namespace Topicly
 
             services.AddDefaultIdentity<ApplicationUser>(opt =>
                 {
-                    var stringBuilder = new StringBuilder();
-
-                    for (char c = 'a'; c != 'z'; ++c) stringBuilder.Append(c);
-                    for (char c = 'A'; c != 'Z'; ++c) stringBuilder.Append(c);
-                    for (char c = '0'; c != '9'; ++c) stringBuilder.Append(c);
-                    stringBuilder.Append("-_");
-
-                    opt.User.AllowedUserNameCharacters =  stringBuilder.ToString();
+                    opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-";
+                    opt.User.RequireUniqueEmail = true;
                 })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
