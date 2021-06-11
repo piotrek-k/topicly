@@ -81,12 +81,20 @@ namespace Topicly.Controllers
         public async Task<IActionResult> ChangeUserName([FromBody] User_Request_ChangeName req)
         {
             var user = await GetCurrentUser();
+            if (user == null)
+            {
+                return BadRequest("Could not recognize user");
+            }
+
             var result = await UserManager.SetUserNameAsync(user, req.NewUserName);
 
             if (!result.Succeeded)
             {
                 return BadRequest(result.Errors);
             }
+
+            await SignInManager.SignOutAsync();
+            await SignInManager.SignInAsync(user, true);
 
             return Ok();
         }
