@@ -2,6 +2,6 @@
 {
     public class User_Request_ChangeName
     {
-        public string NewUserName { get; }
+        public string NewUserName { get; set; }
     }
 }
