@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Topicly.Controllers.BaseClasses;
+using Topicly.RequestsAndResponsesModels;
+using Topicly.Services;
 using Topicly.ViewModels;
 
 namespace Topicly.Controllers
@@ -28,15 +30,17 @@ namespace Topicly.Controllers
         private readonly ILogger<TopicsController> _logger;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ITagExtractor _tagExtractor;
 
         public TopicsController(ApplicationDbContext context, ILogger<TopicsController> logger, IMapper mapper,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager, ITagExtractor tagExtractor)
             : base(userManager)
         {
             _context = context;
             _logger = logger;
             _mapper = mapper;
             _userManager = userManager;
+            _tagExtractor = tagExtractor;
         }
 
         /// <summary>
@@ -257,6 +261,8 @@ namespace Topicly.Controllers
         {
             var userId = GetCurrentUserId();
 
+            var tags = _tagExtractor.GetTags(topicCreationViewModel.Content);
+
             await _context.Topics.AddAsync(new Topic
             {
                 Name = topicCreationViewModel.Content,
@@ -266,6 +272,21 @@ namespace Topicly.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
+        }
+
+        [HttpPost("GetTags")]
+        public async Task<IActionResult> GetTagsFromText([FromBody] Topic_Request_GetTags req)
+        {
+            try
+            {
+                var tags = await _tagExtractor.GetTags(req.Text);
+                return Ok(tags);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("{0}. Stack trace:{1}{2}", e.Message, Environment.NewLine, e.StackTrace);
+                return BadRequest(e.Message);
+            }
         }
     }
 }

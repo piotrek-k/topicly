@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using Data;
 using Data.Models.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -15,6 +14,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Topicly.AutoMapper;
 using Topicly.Hubs;
+using Topicly.Options;
+using Topicly.Services;
 
 namespace Topicly
 {
@@ -81,6 +82,8 @@ namespace Topicly
             });
             services.AddSignalR();
 
+            services.Configure<AzureTagExtractorOptions>(Configuration.GetSection(AzureTagExtractorOptions.OptionsTag));
+            services.AddScoped<ITagExtractor, AzureTagExtractor>();
             services.AddAutoMapper(config => config.AddProfile(new AutoMapperProfile()));
         }
 
