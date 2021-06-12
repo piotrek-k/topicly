@@ -1,3 +1,5 @@
+using System;
+
 namespace Topicly.ViewModels
 {
     /// <summary>
@@ -18,5 +20,14 @@ namespace Topicly.ViewModels
         public string CreatedById { get; set; }
         
         public string CreatedByName { get; set; }
+        
+        /// <summary>
+        /// Data utworzenia tematu
+        /// </summary>
+        public DateTimeOffset CreatedAt { get; set; }
+        /// <summary>
+        /// Data zamknęcia tematu
+        /// </summary>
+        public DateTimeOffset DateTimeOfTopicClosing => CreatedAt.AddHours(24);
     }
 }
