@@ -67,6 +67,10 @@ namespace Topicly.Hubs
                     SenderId = Context.UserIdentifier,
                     DateOfSending = receivedMessageAt
                 });
+               
+                // aktualizacja daty ostatniej aktywności
+                chatInDb.LastActivity = DateTimeOffset.Now;
+                
                 await _context.SaveChangesAsync();
 
                 await Clients.Group(ConstructChatGroupId(chatId))

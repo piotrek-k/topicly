@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Data.Models.Topics;
 using Data.Models.Users;
@@ -31,5 +32,14 @@ namespace Data.Models.Chats
         public Topic Topic { get; set; }
 
         public string TopicName => Topic?.Name;
+        
+        /// <summary>
+        /// Data utworzenia czatu
+        /// </summary>
+        public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
+        /// <summary>
+        /// Data wysłania ostatniej wiadomości przez któregokolwiek użytkownika
+        /// </summary>
+        public DateTimeOffset LastActivity { get; set; } = DateTimeOffset.Now;
     }
 }

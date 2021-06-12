@@ -1,3 +1,5 @@
+using System;
+
 namespace Topicly.ViewModels
 {
     public class ChatViewModel
@@ -27,5 +29,14 @@ namespace Topicly.ViewModels
         /// Temat rozmowy
         /// </summary>
         public string TopicName { get; set; }
+        
+        /// <summary>
+        /// Data utworzenia czatu
+        /// </summary>
+        public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
+        /// <summary>
+        /// Data wysłania ostatniej wiadomości przez któregokolwiek użytkownika
+        /// </summary>
+        public DateTimeOffset LastActivity { get; set; }
     }
 }
