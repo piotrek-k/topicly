@@ -138,10 +138,11 @@ namespace Topicly.Controllers
         }
 
         /// <summary>
-        /// Tworzy czat na podstawie tematu
+        /// Tworzy czat na podstawie tematu. Odnotowuje w bazie danych "pozytywną rekację" użytkownika na temat.
+        /// Użytkownik wywołujący ten endpoint to "TopicAnswerer".
         /// </summary>
         /// <param name="topicId">Identyfikator wybranego tematu</param>
-        /// <response code="200">Zwraca w odpowiedzi unikalny identyfikator utworzonego czatu</response>
+        /// <response code="200">Zwraca w odpowiedzi obiekt ChatViewModel</response>
         /// <response code="404">Gdy nie znaleziono podanego identyfikatora tematu w bazie</response>
         [HttpPost("ChooseChat")]
         public async Task<ActionResult> CreateChat(int topicId)
@@ -192,11 +193,12 @@ namespace Topicly.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(new
-            {
-                chatId = addedChat.Entity.Id,
-                otherParticipantId = dbTopic.CreatedById
-            });
+            var chatObject = await _context.Chats
+                .Include(x => x.TopicCreator)
+                .Include(y => y.TopicAnswerer)
+                .FirstOrDefaultAsync(x => x.Id == addedChat.Entity.Id);
+
+            return Ok(_mapper.Map<ChatViewModel>(chatObject));
         }
 
         /// <summary>
