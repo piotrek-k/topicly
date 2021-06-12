@@ -15,7 +15,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Topicly.AutoMapper;
 using Topicly.Hubs;
-using Topicly.Services;
 
 namespace Topicly
 {
