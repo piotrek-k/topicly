@@ -1,27 +1,32 @@
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body><h1>Tester czatów</h1>
 <div class="container">
     <div class="row">&nbsp;</div>
-<!--    <div class="row">-->
-<!--        <div class="col-2">User</div>-->
-<!--        <div class="col-4"><input type="text" id="userInput" /></div>-->
-<!--    </div>-->
+    <!--    <div class="row">-->
+    <!--        <div class="col-2">User</div>-->
+    <!--        <div class="col-4"><input type="text" id="userInput" /></div>-->
+    <!--    </div>-->
     <div class="row">
         <div class="col-2">Message</div>
-        <div class="col-4"><input type="text" id="messageInput" /></div>
+        <div class="col-4"><input type="text" id="messageInput"/></div>
     </div>
     <div class="row">
         <div class="col-2">ChatId</div>
-        <div class="col-4"><input type="text" id="chatIdInput" /></div>
+        <div class="col-4"><input type="text" id="chatIdInput"/></div>
     </div>
     <div class="row">&nbsp;</div>
     <div class="row">
         <div class="col-6">
-            <input type="button" id="sendButton" value="Send Message" />
+            <input type="button" id="sendButton" value="Send Message"/>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-12">
-        <hr />
+        <hr/>
     </div>
 </div>
 <div class="row">
@@ -29,5 +34,36 @@
         <ul id="messagesList"></ul>
     </div>
 </div>
+
+<h1>Tester powiadomiania o nowym czacie</h1>
+<div class="container">
+    <div class="row">
+        <p>
+            <small><b>Alice:</b> c7b013f0-5201-4317-abd8-c211f91b7330</small>
+            <small><b>Bob:</b> fab4fac1-c546-41de-aebc-a14da6895711</small>
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-2">Id użytkownika któremu chcemy odświeżyć listę:</div>
+        <div class="col-4"><input type="text" id="listRefreshUserId"/></div>
+    </div>
+    <div class="row">
+        <div class="col-2">Nazwa nowego tematu</div>
+        <div class="col-4"><input type="text" id="listRefreshTopicName"/></div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <input type="button" id="sendButton2" value="Send"/>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <ul id="messagesList2"></ul>
+    </div>
+</div>
+
 <script src="/js/signalr/dist/browser/signalr.js"></script>
 <script src="/js/chatTester.js"></script>
+</body>
+</html>

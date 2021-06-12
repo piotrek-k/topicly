@@ -22,13 +22,21 @@ namespace Topicly.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            await UpdateChatSubscriptions(null);
+            await UpdateChatSubscriptions(null, null);
 
             await base.OnConnectedAsync();
         }
 
-        public async Task UpdateChatSubscriptions(string otherParticipantId)
+        /// <summary>
+        /// Powiadom aplikację kliencką innego użytkownika, że dodano go do nowego czatu
+        /// </summary>
+        /// <param name="otherParticipantId"></param>
+        /// <param name="topic"></param>
+        /// <returns></returns>
+        public async Task UpdateChatSubscriptions(string otherParticipantId, string topic)
         {
+            var senderId = Context.UserIdentifier;
+
             // Pobieram listę czatów użytkownika i automatycznie nasłuchuję aktualizacji każdego z nich
             foreach (var chat in _context.Chats.Where(x =>
                 x.TopicCreatorId == Context.UserIdentifier || x.TopicAnswererId == Context.UserIdentifier))
@@ -38,9 +46,20 @@ namespace Topicly.Hubs
             }
 
             if (otherParticipantId != null)
-                await Clients.Users(otherParticipantId).SendAsync("requestChatListUpdate");
+            {
+                if (Context.User != null)
+                    await Clients.Users(otherParticipantId)
+                        .SendAsync("requestChatListUpdate", Context.User.Identity?.Name, topic);
+            }
+            // else
+            // {
+            //     throw new HubException($"otherParticipantId jest puste");
+            // }
         }
 
+        /// <summary>
+        /// Wyślij wiadomość o treści `message` do czatu `chatId`
+        /// </summary>
         public async Task SendMessage(string message, int chatId)
         {
             var chatInDb = await _context.Chats.FindAsync(chatId);
@@ -67,10 +86,10 @@ namespace Topicly.Hubs
                     SenderId = Context.UserIdentifier,
                     DateOfSending = receivedMessageAt
                 });
-               
+
                 // aktualizacja daty ostatniej aktywności
                 chatInDb.LastActivity = DateTimeOffset.Now;
-                
+
                 await _context.SaveChangesAsync();
 
                 await Clients.Group(ConstructChatGroupId(chatId))
