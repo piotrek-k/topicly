@@ -48,11 +48,11 @@ namespace Data
                     Email = "bob@mail.com",
                     NormalizedEmail =  "bob@mail.com".ToUpper(),
                     UserName = "bob",
-                    NormalizedUserName = "bob".ToUpper()
+                    NormalizedUserName = "bob".ToUpper(),
+                    ConcurrencyStamp = "5b39e64d-1f37-4273-a14b-cf96c621f2be",
+                    PasswordHash = "AQAAAAEAACcQAAAAEC9DL7FDwapRt+dT3rP9ABeXLOFipwhUv5WPGKJYnTdoFduEHsy7I2ajVH2ynTOHuA==",
+                    SecurityStamp = "1e7c8add-25c2-4666-8c20-88f02ff06fb6",
                 };
-
-                PasswordHasher<ApplicationUser> passwordHasher = new PasswordHasher<ApplicationUser>();
-                user.PasswordHash = passwordHasher.HashPassword(user, "Password1!");
 
                 builder.Entity<ApplicationUser>().HasData(user);
             }
@@ -64,11 +64,11 @@ namespace Data
                     Email = "alice@mail.com",
                     NormalizedEmail =  "alice@mail.com".ToUpper(),
                     UserName = "alice",
-                    NormalizedUserName = "alice".ToUpper()
+                    NormalizedUserName = "alice".ToUpper(),
+                    ConcurrencyStamp = "6d4d777c-833a-4882-8cc2-998741d682fb",
+                    PasswordHash = "AQAAAAEAACcQAAAAEJeED9Tjrh1HWd495eES4NMzrLOZNG3whkLCv1YrYwCYXTJRaXOCUq7xEcxKW2AE+A==",
+                    SecurityStamp = "c8055658-8a3e-4321-9cf7-6b2e7d52de74",
                 };
-
-                PasswordHasher<ApplicationUser> passwordHasher = new PasswordHasher<ApplicationUser>();
-                user.PasswordHash = passwordHasher.HashPassword(user, "Password1!");
 
                 builder.Entity<ApplicationUser>().HasData(user);
             }
@@ -79,7 +79,6 @@ namespace Data
             var dbUser1 = "fab4fac1-c546-41de-aebc-a14da6895711";
             var dbUser2 = "c7b013f0-5201-4317-abd8-c211f91b7330";
             
-            Random r = new Random();
             for (int y = -1; y >= -10; y--)
             {
                 builder.Entity<Topic>().HasData(new Topic()
@@ -87,7 +86,8 @@ namespace Data
                     Id = y,
                     Name = "TEMAT #" + (y + 1),
                     CreatedById = y % 2 == 0 ? dbUser1 : dbUser2,
-                    Tags = "tag" + r.Next(4)
+                    CreatedAt = new DateTimeOffset(2021, 03, 31, 0, 0, 0, TimeSpan.Zero),
+                    Tags = "tag" + (y % 4)
                 });
 
                 builder.Entity<Chat>().HasData(new Chat()
@@ -95,7 +95,9 @@ namespace Data
                     Id = y,
                     TopicId = y,
                     TopicAnswererId = y % 2 == 0 ? dbUser1 : dbUser2,
-                    TopicCreatorId = y % 2 == 0 ? dbUser2 : dbUser1
+                    TopicCreatorId = y % 2 == 0 ? dbUser2 : dbUser1,
+                    CreatedAt = new DateTimeOffset(2021, 06, 1, 0, 0, 0, TimeSpan.Zero),
+                    LastActivity = new DateTimeOffset(2021, 06, 1, 0, 0, 0, TimeSpan.Zero),
                 });
             
                 for (int x = -1; x >= -10; x--)
@@ -105,7 +107,7 @@ namespace Data
                         Id = x + (y * 10),
                         Content = "this is test message #" + x,
                         ChatId = y,
-                        DateOfSending = DateTimeOffset.Now,
+                        DateOfSending = new DateTimeOffset(2021, 06, 1, 0, 0, 0, TimeSpan.Zero),
                         SenderId = x % 2 == 0 ? dbUser1 : dbUser2
                     });
                 }
