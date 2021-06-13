@@ -29,6 +29,8 @@ namespace Topicly.ViewModels
         /// Temat rozmowy
         /// </summary>
         public string TopicName { get; set; }
+        public bool CreatorSeen { get; set; }
+        public bool AnswererSeen { get; set; }
         
         /// <summary>
         /// Data utworzenia czatu
