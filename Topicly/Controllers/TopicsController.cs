@@ -269,7 +269,7 @@ namespace Topicly.Controllers
             foreach (var tag in tags)
             {
                 var inDb = await _context.Tags.FirstOrDefaultAsync(x =>
-                    x.Name.Equals(tag, StringComparison.CurrentCultureIgnoreCase));
+                    x.Name.Equals(tag.ToLower().Trim()));
 
                 if (inDb == null)
                 {
