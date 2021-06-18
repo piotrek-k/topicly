@@ -42,6 +42,7 @@ namespace Topicly.Controllers
                 .Include(x => x.TopicAnswerer)
                 .Include(x => x.TopicCreator)
                 .Where(x => x.TopicAnswererId == GetCurrentUserId() || x.TopicCreatorId == GetCurrentUserId())
+                .OrderByDescending(x=>x.LastActivity)
                 .ToList();
             return chats.Select(x => _mapper.Map<ChatViewModel>(x));
         }
