@@ -125,6 +125,10 @@ namespace Data
             }
         }
 
+        int Mod(int x, int m) {
+            return (x%m + m)%m;
+        }
+
         private void SeedData(ModelBuilder builder)
         {
             var dbUser1 = "fab4fac1-c546-41de-aebc-a14da6895711";
@@ -178,7 +182,7 @@ namespace Data
                 builder.Entity<TopicTag>().HasData(new TopicTag()
                 {
                     TopicId = y,
-                    TagId = -1 * ((y % 4) + 1)
+                    TagId = -1 * (Mod(y, 4) + 1)
                 });
             }
         }

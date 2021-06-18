@@ -12,8 +12,8 @@ namespace Data.Models.Topics
         /// <summary>
         /// Ilość tematów posiadających ten tag
         /// </summary>
-        public int NumberOfTopicsUsing { get; set; } = 0;
-        
+        public int NumberOfTopicsUsing => Topics.Count;
+
         /// <summary>
         /// Lista tematów posiadających ten tag
         /// </summary>
