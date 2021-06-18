@@ -153,7 +153,9 @@ namespace Topicly.Controllers
         [HttpPost("ChooseChat")]
         public async Task<ActionResult> CreateChat(int topicId)
         {
-            var dbTopic = await _context.Topics.FirstOrDefaultAsync(x => x.Id == topicId);
+            var dbTopic = await _context.Topics
+                .Include(x => x.Tags)
+                .FirstOrDefaultAsync(x => x.Id == topicId);
             if (dbTopic == null)
             {
                 return NotFound("Podany temat nie istnieje");
@@ -216,7 +218,9 @@ namespace Topicly.Controllers
         public async Task<ActionResult> RejectTopicProposal(int topicId)
         {
             var userId = GetCurrentUserId();
-            var dbTopic = await _context.Topics.FirstOrDefaultAsync(x => x.Id == topicId);
+            var dbTopic = await _context.Topics
+                .Include(x=>x.Tags)
+                .FirstOrDefaultAsync(x => x.Id == topicId);
             if (dbTopic == null)
             {
                 return NotFound("Podany temat nie istnieje");

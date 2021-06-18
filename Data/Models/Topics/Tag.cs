@@ -13,7 +13,7 @@ namespace Data.Models.Topics
         /// Ilość tematów posiadających ten tag
         /// </summary>
         // TODO: zmienić na bardziej efektywne rozwiązanie
-        public int NumberOfTopicsUsing => Topics.Count;
+        public int NumberOfTopicsUsing => Topics?.Count ?? 0;
 
         /// <summary>
         /// Lista tematów posiadających ten tag

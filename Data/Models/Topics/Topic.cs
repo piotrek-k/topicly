@@ -40,7 +40,7 @@ namespace Data.Models.Topics
         {
             get
             {
-                return String.Join(';', Tags.Select(x=>x.Name));
+                return String.Join(';', Tags?.Select(x=>x.Name) ?? Array.Empty<string>());
             }
         }
 
