@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using Data.Models.Chats;
 using Data.Models.Topics;
 using Data.Models.Users;
@@ -22,6 +23,9 @@ namespace Topicly.AutoMapper
                 .ForMember(mvm => mvm.SenderUniqueId,
                     opt => opt.MapFrom(src => src.SenderId));
             CreateMap<Topic, TopicViewModel>()
+                .ForMember(mvm => mvm.Tags,
+                    opt => 
+                        opt.MapFrom((src => src.Tags.Select(x=>x.Name).ToArray())))
                 .ForMember(mvm => mvm.CreatedByName,
                     opt => opt.MapFrom(src => src.CreatedBy.UserName));
             CreateMap<User_Request_SignUp, ApplicationUser>();

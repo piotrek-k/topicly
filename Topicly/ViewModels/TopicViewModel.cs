@@ -29,5 +29,10 @@ namespace Topicly.ViewModels
         /// Data zamknęcia tematu
         /// </summary>
         public DateTimeOffset DateTimeOfTopicClosing => CreatedAt.AddHours(24);
+        
+        /// <summary>
+        /// Lista nazw tagów
+        /// </summary>
+        public string[] Tags { get; set; }
     }
 }
