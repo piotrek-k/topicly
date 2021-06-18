@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using Data.Models.Users;
 
 namespace Data.Models.Topics
@@ -33,6 +36,18 @@ namespace Data.Models.Topics
         /// Jako jeden ciąg znaków, oddzielone średnikiem
         /// Przykład: tag1;tag2;tag 3;
         /// </summary>
-        public string Tags { get; set; } = "";
+        public string TagsAsString
+        {
+            get
+            {
+                return String.Join(';', Tags.Select(x=>x.Name));
+            }
+        }
+
+        /// <summary>
+        /// Lista tagów jako rekordów w bazie danych
+        /// </summary>
+        public ICollection<Tag> Tags { get; set; }
+        public List<TopicTag> TopicTags { get; set; }
     }
 }

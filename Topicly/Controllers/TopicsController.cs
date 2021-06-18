@@ -85,7 +85,7 @@ namespace Topicly.Controllers
                 foreach (var tag in tagStrength)
                 {
                     Regex rgx = new Regex(@"(;|^)" + tag.Keyword + @"(;|$)");
-                    if (topic.Tags != null && rgx.IsMatch(topic.Tags))
+                    if (topic.TagsAsString != null && rgx.IsMatch(topic.TagsAsString))
                     {
                         topicStrength += tag.Strength;
                     }
@@ -168,9 +168,9 @@ namespace Topicly.Controllers
             });
 
             // zwiększenie PositiveCount dla tagów na potrzeby algorytmu proponowania tematu
-            if (dbTopic.Tags != null)
+            if (dbTopic.TagsAsString != null)
             {
-                foreach (var tag in dbTopic.Tags.Split(";"))
+                foreach (var tag in dbTopic.TagsAsString.Split(";"))
                 {
                     if (tag == "" || tag == null)
                     {
@@ -220,9 +220,9 @@ namespace Topicly.Controllers
                 return NotFound("Podany temat nie istnieje");
             }
 
-            if (dbTopic.Tags != null)
+            if (dbTopic.TagsAsString != null)
             {
-                foreach (var tag in dbTopic.Tags.Split(";"))
+                foreach (var tag in dbTopic.TagsAsString.Split(";"))
                 {
                     if (tag == "")
                     {
@@ -261,13 +261,31 @@ namespace Topicly.Controllers
         {
             var userId = GetCurrentUserId();
 
-            var tags = _tagExtractor.GetTags(topicCreationViewModel.Content);
+            var tags = await _tagExtractor.GetTags(topicCreationViewModel.Content);
+
+            List<Tag> tagsInDb = new List<Tag>();
+            foreach (var tag in tags)
+            {
+                Tag inDb;
+                inDb = await _context.Tags.FirstOrDefaultAsync(x =>
+                    x.Name.Equals(tag, StringComparison.CurrentCultureIgnoreCase));
+
+                if (inDb == null)
+                {
+                    inDb = new Tag()
+                    {
+                        Name = tag
+                    };
+                }
+                
+                tagsInDb.Add(inDb);
+            }
 
             await _context.Topics.AddAsync(new Topic
             {
                 Name = topicCreationViewModel.Content,
                 CreatedById = userId,
-                Tags = topicCreationViewModel.Tags
+                Tags = tagsInDb
             });
             await _context.SaveChangesAsync();
 
@@ -280,7 +298,21 @@ namespace Topicly.Controllers
             try
             {
                 var tags = await _tagExtractor.GetTags(req.Text);
-                return Ok(tags);
+
+                // usunięcie duplikatów
+                tags = tags.GroupBy(x => x).Select(x => x.Key);
+
+                Topic_Response_GetTags response = new Topic_Response_GetTags();
+                foreach (var t in tags)
+                {
+                    response.Tags.Add(new Topic_Response_GetTags.GetTags_Tag()
+                    {
+                        Name = t,
+                        Popularity = _context.Topics.Count(x => x.TagsAsString.Contains(t))
+                    });
+                }
+
+                return Ok(response);
             }
             catch (Exception e)
             {
