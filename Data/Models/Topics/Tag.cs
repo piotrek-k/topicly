@@ -12,6 +12,7 @@ namespace Data.Models.Topics
         /// <summary>
         /// Ilość tematów posiadających ten tag
         /// </summary>
+        // TODO: zmienić na bardziej efektywne rozwiązanie
         public int NumberOfTopicsUsing => Topics.Count;
 
         /// <summary>

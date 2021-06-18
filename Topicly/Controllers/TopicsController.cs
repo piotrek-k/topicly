@@ -54,7 +54,9 @@ namespace Topicly.Controllers
 
             // Pobranie listy tematów z ostatnich 24h, które nie zostały jeszcze przeczytane przez użytkownika
             var topics =
-                (from t in _context.Set<Topic>().Include(x => x.CreatedBy)
+                (from t in _context.Set<Topic>()
+                        .Include(x => x.CreatedBy)
+                        .Include(x => x.Tags)
                     from s in _context.Set<SeenByUser>().Where(x => x.TopicId == t.Id).DefaultIfEmpty()
                     where s == null &&
                           t.CreatedAt >= DateTimeOffset.Now.AddHours(-24) &&
@@ -266,8 +268,7 @@ namespace Topicly.Controllers
             List<Tag> tagsInDb = new List<Tag>();
             foreach (var tag in tags)
             {
-                Tag inDb;
-                inDb = await _context.Tags.FirstOrDefaultAsync(x =>
+                var inDb = await _context.Tags.FirstOrDefaultAsync(x =>
                     x.Name.Equals(tag, StringComparison.CurrentCultureIgnoreCase));
 
                 if (inDb == null)
@@ -277,7 +278,7 @@ namespace Topicly.Controllers
                         Name = tag
                     };
                 }
-                
+
                 tagsInDb.Add(inDb);
             }
 
@@ -305,10 +306,16 @@ namespace Topicly.Controllers
                 Topic_Response_GetTags response = new Topic_Response_GetTags();
                 foreach (var t in tags)
                 {
+                    // TODO: poniższa instrukcja wywołuje zapytanie do tabeli Topics w celu policzenia popularności.
+                    // Trochę mało efektywne rozwiązanie
+                    var inDb = await _context.Tags
+                        .Include(x => x.Topics)
+                        .FirstOrDefaultAsync(x => x.Name.Equals(t.ToLower().Trim()));
+
                     response.Tags.Add(new Topic_Response_GetTags.GetTags_Tag()
                     {
-                        Name = t,
-                        Popularity = _context.Topics.Count(x => x.TagsAsString.Contains(t))
+                        Name = inDb != null ? inDb.Name : t.ToLower().Trim(),
+                        Popularity = inDb?.NumberOfTopicsUsing ?? 0
                     });
                 }
 
