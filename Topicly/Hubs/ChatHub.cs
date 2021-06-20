@@ -1,18 +1,24 @@
+#nullable enable
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Data;
 using Data.Models.Chats;
-using IdentityServer4.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using Topicly.Hubs.Tools;
 
 namespace Topicly.Hubs
 {
+    [Authorize]
     public class ChatHub : Hub
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<ChatHub> _logger;
+
+        private static readonly ConnectionMapping<string> Connections =
+            new ConnectionMapping<string>();
 
         public ChatHub(ApplicationDbContext context, ILogger<ChatHub> logger)
         {
@@ -22,9 +28,18 @@ namespace Topicly.Hubs
 
         public override async Task OnConnectedAsync()
         {
+            Connections.Add(Context.UserIdentifier ?? throw new InvalidOperationException(), Context.ConnectionId);
+
             await UpdateChatSubscriptions(null, null);
 
             await base.OnConnectedAsync();
+        }
+
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            Connections.Remove(Context.UserIdentifier ?? throw new InvalidOperationException(), Context.ConnectionId);
+
+            await base.OnDisconnectedAsync(exception);
         }
 
         /// <summary>
@@ -33,23 +48,40 @@ namespace Topicly.Hubs
         /// <param name="otherParticipantId"></param>
         /// <param name="topic"></param>
         /// <returns></returns>
-        public async Task UpdateChatSubscriptions(string otherParticipantId, string topic)
+        public async Task UpdateChatSubscriptions(string? otherParticipantId, string? topic)
         {
             var senderId = Context.UserIdentifier;
 
-            // Pobieram listę czatów użytkownika i automatycznie nasłuchuję aktualizacji każdego z nich
+            // Dołącz użytkownika wysyłającego sygnał do wszystkich czatów
             foreach (var chat in _context.Chats.Where(x =>
                 x.TopicCreatorId == Context.UserIdentifier || x.TopicAnswererId == Context.UserIdentifier))
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, ConstructChatGroupId(chat.Id));
-                _logger.LogInformation($"Added user {Context.UserIdentifier} to group {ConstructChatGroupId(chat.Id)}");
+                _logger.LogInformation(
+                    $"Refreshed user {Context.UserIdentifier} subscription to group {ConstructChatGroupId(chat.Id)}");
             }
 
             if (otherParticipantId != null)
             {
+                // Dołącz otherParticipantId do jego wszystkich czatów
+                foreach (var chat in _context.Chats.Where(x =>
+                    x.TopicCreatorId == otherParticipantId || x.TopicAnswererId == otherParticipantId))
+                {
+                    // Nie znamy connectionId, ale mamy możliwych kandydatów w pamięci
+                    foreach (var connectionId in Connections.GetConnections(otherParticipantId))
+                    {
+                        await Groups.AddToGroupAsync(connectionId, ConstructChatGroupId(chat.Id));
+                    }
+
+                    _logger.LogInformation(
+                        $"Refreshed user {otherParticipantId} subscription to group {ConstructChatGroupId(chat.Id)}");
+                }
+                
                 if (Context.User != null)
+                {
                     await Clients.Users(otherParticipantId)
                         .SendAsync("requestChatListUpdate", Context.User.Identity?.Name, topic);
+                }
             }
             // else
             // {
