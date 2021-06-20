@@ -30,7 +30,9 @@ namespace Topicly.ViewModels
         /// </summary>
         public string TopicName { get; set; }
         public bool CreatorSeen { get; set; }
+        public bool CreatorDeleted { get; set; }
         public bool AnswererSeen { get; set; }
+        public bool AnswererDeleted { get; set; }
         
         /// <summary>
         /// Data utworzenia czatu

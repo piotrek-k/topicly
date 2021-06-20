@@ -51,8 +51,6 @@ namespace Topicly.Hubs
         /// <returns></returns>
         public async Task UpdateChatSubscriptions(string? otherParticipantId, string? topic)
         {
-            var senderId = Context.UserIdentifier;
-
             // Dołącz użytkownika wysyłającego sygnał do wszystkich czatów
             foreach (var chat in _context.Chats.Where(x =>
                 x.TopicCreatorId == Context.UserIdentifier || x.TopicAnswererId == Context.UserIdentifier))
@@ -109,6 +107,11 @@ namespace Topicly.Hubs
                 if (chatInDb.TopicAnswererId != senderId && chatInDb.TopicCreatorId != senderId)
                 {
                     throw new HubException($"Użytkownik nie ma uprawnień do czatu: chatId = ({chatId})");
+                }
+
+                if (chatInDb.AnswererDeleted || chatInDb.CreatorDeleted)
+                {
+                    throw new HubException($"Chat został usunięty przez co najmniej jednego z użytkowników: chatID = ({chatId})");
                 }
 
                 var receivedMessageAt = DateTimeOffset.Now;

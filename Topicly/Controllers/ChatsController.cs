@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data;
+using Data.Models.Chats;
 using Data.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -39,13 +40,18 @@ namespace Topicly.Controllers
         [HttpGet("GetAllForCurrentUser")]
         public async Task<IEnumerable<ChatViewModel>> GetChatsForUser()
         {
+            var userId = GetCurrentUserId();
+
             var chats = await _context.Chats
                 .Include(x => x.Topic)
                 .Include(x => x.TopicAnswerer)
                 .Include(x => x.TopicCreator)
-                .Where(x => x.TopicAnswererId == GetCurrentUserId() || x.TopicCreatorId == GetCurrentUserId())
+                .Where(x =>
+                    x.TopicAnswererId == userId && x.AnswererDeleted == false ||
+                    x.TopicCreatorId == userId && x.CreatorDeleted == false)
                 .OrderByDescending(x=>x.LastActivity)
                 .ToListAsync();
+
             return chats.Select(x => _mapper.Map<ChatViewModel>(x));
         }
 
@@ -77,6 +83,26 @@ namespace Topicly.Controllers
             }
 
             await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPost("DeleteChat")]
+        public async Task<IActionResult> DeleteChat(Chat_Request_DeleteChat req)
+        {
+            var userId = GetCurrentUserId();
+            var chat = await _context.FindAsync<Chat>(req.Id);
+
+            if (userId == chat.TopicCreatorId)
+            {
+                chat.CreatorDeleted = true;
+            }
+            else
+            {
+                chat.AnswererDeleted = true;
+            }
+
+            await _context.SaveChangesAsync();
+
             return Ok();
         }
     }

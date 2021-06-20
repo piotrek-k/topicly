@@ -33,7 +33,9 @@ namespace Data.Models.Chats
 
         public string TopicName => Topic?.Name;
         public bool CreatorSeen { get; set; }
+        public bool CreatorDeleted { get; set; }
         public bool AnswererSeen { get; set; }
+        public bool AnswererDeleted { get; set; }
         
         /// <summary>
         /// Data utworzenia czatu
