@@ -42,7 +42,7 @@ namespace Topicly.Controllers
         {
             var userId = GetCurrentUserId();
 
-            var chats = await _context.Chats
+            var dbChats = await _context.Chats
                 .Include(x => x.Topic)
                 .Include(x => x.TopicAnswerer)
                 .Include(x => x.TopicCreator)
@@ -52,7 +52,21 @@ namespace Topicly.Controllers
                 .OrderByDescending(x=>x.LastActivity)
                 .ToListAsync();
 
-            return chats.Select(x => _mapper.Map<ChatViewModel>(x));
+            var chats = dbChats
+                .Select(x => _mapper.Map<ChatViewModel>(x))
+                .ToList();
+
+            foreach (var chat in chats)
+            {
+                chat.LastMessageSent = await _context.Messages
+                    .Where(w => w.ChatId == chat.Id)
+                    .OrderByDescending(o => o.DateOfSending)
+                    .Take(1)
+                    .Select(s => s.Content)
+                    .FirstOrDefaultAsync();
+            }
+
+            return chats;
         }
 
         [HttpPost("MarkChatAsSeen")]
