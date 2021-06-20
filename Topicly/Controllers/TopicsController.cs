@@ -132,14 +132,6 @@ namespace Topicly.Controllers
                 return NotFound("Brak tematów do zaproponowania");
             }
 
-            // Oznacz zwrócony temat jako "zobaczony przez użytkownika". Nie pokazuj go użytkownikowi więcej.
-            await _context.SeenByUser.AddAsync(new SeenByUser()
-            {
-                TopicId = chosenTopic.Id,
-                UserId = userId
-            });
-            await _context.SaveChangesAsync();
-
             return _mapper.Map<TopicViewModel>(chosenTopic);
         }
 
@@ -198,7 +190,14 @@ namespace Topicly.Controllers
                     }
                 }
             }
-
+            
+            // Oznacz zwrócony temat jako "zobaczony przez użytkownika". Nie pokazuj go użytkownikowi więcej.
+            await _context.SeenByUser.AddAsync(new SeenByUser()
+            {
+                TopicId = topicId,
+                UserId = userId
+            });
+            
             await _context.SaveChangesAsync();
 
             var chatObject = await _context.Chats
@@ -254,7 +253,15 @@ namespace Topicly.Controllers
 
                 await _context.SaveChangesAsync();
             }
-
+            
+            // Oznacz zwrócony temat jako "zobaczony przez użytkownika". Nie pokazuj go użytkownikowi więcej.
+            await _context.SeenByUser.AddAsync(new SeenByUser()
+            {
+                TopicId = topicId,
+                UserId = userId
+            });
+            await _context.SaveChangesAsync();
+            
             return Ok();
         }
 
