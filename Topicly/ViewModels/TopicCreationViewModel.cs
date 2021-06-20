@@ -19,7 +19,7 @@ namespace Topicly.ViewModels
         public List<string> Tags { get; set; }
         
         /// <summary>
-        /// Moment w którym temat ulega przedawnieniu (?)
+        /// Moment w którym temat ulega przedawnieniu
         /// </summary>
         public DateTimeOffset ExpiryDate { get; set; }
     }

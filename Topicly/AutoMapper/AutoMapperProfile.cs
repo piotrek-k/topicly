@@ -27,7 +27,9 @@ namespace Topicly.AutoMapper
                     opt => 
                         opt.MapFrom((src => src.Tags.Select(x=>x.Name).ToArray())))
                 .ForMember(mvm => mvm.CreatedByName,
-                    opt => opt.MapFrom(src => src.CreatedBy.UserName));
+                    opt => opt.MapFrom(src => src.CreatedBy.UserName))
+                .ForMember(mvm => mvm.DateTimeOfTopicClosing,
+                    opt => opt.MapFrom(src => src.ExpiryDate));
             CreateMap<User_Request_SignUp, ApplicationUser>();
         }
     }

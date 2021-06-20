@@ -52,14 +52,14 @@ namespace Topicly.Controllers
         {
             var userId = GetCurrentUserId();
 
-            // Pobranie listy tematów z ostatnich 24h, które nie zostały jeszcze przeczytane przez użytkownika
+            // Pobranie listy tematów którym nie minęło ExpiryDate, które nie zostały jeszcze przeczytane przez użytkownika
             var topics =
                 (from t in _context.Set<Topic>()
                         .Include(x => x.CreatedBy)
                         .Include(x => x.Tags)
                     from s in _context.Set<SeenByUser>().Where(x => x.TopicId == t.Id).DefaultIfEmpty()
                     where s == null &&
-                          t.CreatedAt >= DateTimeOffset.Now.AddHours(-24) &&
+                          t.ExpiryDate >= DateTimeOffset.Now &&
                           t.CreatedById != userId
                     select t).ToList();
 
@@ -288,12 +288,19 @@ namespace Topicly.Controllers
                 .Select(tag => new Tag { Name = tag })
                 .ToList();
 
+            if (topicCreationViewModel.ExpiryDate == default)
+            {
+                // gdy nie podano daty
+                topicCreationViewModel.ExpiryDate = DateTimeOffset.Now.AddHours(24);
+            }
+            
             var topicTags = tagsInDb.Concat(newTags).ToList();
             var newTopic = new Topic
             {
                 Name = topicCreationViewModel.Content,
                 CreatedById = userId,
-                Tags = topicTags
+                Tags = topicTags,
+                ExpiryDate = topicCreationViewModel.ExpiryDate
             };
 
             await _context.Tags.AddRangeAsync(newTags);

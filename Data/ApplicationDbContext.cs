@@ -151,6 +151,7 @@ namespace Data
                     Name = "TEMAT #" + (y + 1),
                     CreatedById = y % 2 == 0 ? dbUser1 : dbUser2,
                     CreatedAt = new DateTimeOffset(2021, 03, 31, 0, 0, 0, TimeSpan.Zero),
+                    ExpiryDate = new DateTimeOffset(2021, 04, 2, 0, 0, 0, TimeSpan.Zero)
                     //TagsAsString = "tag" + (y % 4)
                 });
 
