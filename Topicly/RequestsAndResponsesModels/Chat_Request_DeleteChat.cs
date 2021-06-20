@@ -1,4 +1,4 @@
-namespace Topicly.Controllers
+namespace Topicly.RequestsAndResponsesModels
 {
     public class Chat_Request_DeleteChat
     {

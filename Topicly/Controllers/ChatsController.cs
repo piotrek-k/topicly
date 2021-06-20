@@ -92,13 +92,22 @@ namespace Topicly.Controllers
             var userId = GetCurrentUserId();
             var chat = await _context.FindAsync<Chat>(req.Id);
 
+            if (chat == null)
+            {
+                return BadRequest($"Chat {req.Id} does not exist");
+            }
+
             if (userId == chat.TopicCreatorId)
             {
                 chat.CreatorDeleted = true;
             }
-            else
+            else if (userId == chat.TopicAnswererId)
             {
                 chat.AnswererDeleted = true;
+            }
+            else
+            {
+                return BadRequest($"User {userId} is not a participant of chat {req.Id}");
             }
 
             await _context.SaveChangesAsync();
