@@ -31,6 +31,11 @@ namespace Data.Models.Topics
         /// Data utworzenia tematu
         /// </summary>
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
+        
+        /// <summary>
+        /// Moment w którym temat ulega przedawnieniu
+        /// </summary>
+        public DateTimeOffset ExpiryDate { get; set; }
 
         /// <summary>
         /// Jako jeden ciąg znaków, oddzielone średnikiem
