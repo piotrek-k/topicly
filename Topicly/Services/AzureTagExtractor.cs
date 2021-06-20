@@ -72,13 +72,23 @@ namespace Topicly.Services
             var respJson = await response.Content.ReadAsStringAsync();
             var resp = JsonConvert.DeserializeObject<Response>(respJson);
 
-            var tags = resp.Documents[0].KeyPhrases
-                .SelectMany(s => s.Split(' '))
+
+            //var tags = resp.Documents[0].KeyPhrases
+            //    .SelectMany(s => s.Split(' '))
+            //    .Select(s => s.ToLowerInvariant())
+            //    .Distinct()
+            //    .ToList();
+
+            var tags = resp.Documents[0].KeyPhrases;
+            var tagsSeparatedWord = tags
+                .SelectMany(m => m.Split(' '));
+
+            var result = tags.Concat(tagsSeparatedWord)
                 .Select(s => s.ToLowerInvariant())
                 .Distinct()
                 .ToList();
 
-            return tags;
+            return result;
         }
     }
 }
