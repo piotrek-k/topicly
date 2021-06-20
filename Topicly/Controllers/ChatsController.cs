@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Data;
 using Data.Models.Users;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Topicly.Controllers.BaseClasses;
+using Topicly.RequestsAndResponsesModels;
 using Topicly.ViewModels;
 
 namespace Topicly.Controllers
@@ -35,16 +37,47 @@ namespace Topicly.Controllers
         /// Lista czatów dla zalogowanego użytkownika
         /// </summary>
         [HttpGet("GetAllForCurrentUser")]
-        public IEnumerable<ChatViewModel> GetChatsForUser()
+        public async Task<IEnumerable<ChatViewModel>> GetChatsForUser()
         {
-            var chats = _context.Chats
+            var chats = await _context.Chats
                 .Include(x => x.Topic)
                 .Include(x => x.TopicAnswerer)
                 .Include(x => x.TopicCreator)
                 .Where(x => x.TopicAnswererId == GetCurrentUserId() || x.TopicCreatorId == GetCurrentUserId())
                 .OrderByDescending(x=>x.LastActivity)
-                .ToList();
+                .ToListAsync();
             return chats.Select(x => _mapper.Map<ChatViewModel>(x));
+        }
+
+        [HttpPost("MarkChatAsSeen")]
+        public async Task<IActionResult> MarkChatAsSeen(Chat_Request_MarkChatAsSeen req)
+        {
+            var userId = GetCurrentUserId();
+            var chat = await _context.Chats.FindAsync(req.ChatId);
+
+            if (chat == null)
+            {
+                return BadRequest("Chat of ID does not exist");
+            }
+
+            var isUserParticipantOfChat = chat.TopicCreatorId == userId || chat.TopicAnswererId == userId;
+
+            if (isUserParticipantOfChat == false)
+            {
+                return Unauthorized($"User is not a participant of the chat {req.ChatId}");
+            }
+
+            if (userId == chat.TopicCreatorId)
+            {
+                chat.CreatorSeen = true;
+            }
+            else
+            {
+                chat.AnswererSeen = true;
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok();
         }
     }
 }

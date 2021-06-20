@@ -6,6 +6,7 @@ using Data;
 using Data.Models.Chats;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Topicly.Hubs.Tools;
 
@@ -119,8 +120,7 @@ namespace Topicly.Hubs
                     DateOfSending = receivedMessageAt
                 });
 
-                // aktualizacja daty ostatniej aktywności
-                chatInDb.LastActivity = DateTimeOffset.Now;
+                UpdateChat(chatInDb, senderId);
 
                 await _context.SaveChangesAsync();
 
@@ -131,6 +131,21 @@ namespace Topicly.Hubs
             {
                 throw new Exception("Brak danych o użytkowniku");
             }
+        }
+
+        private void UpdateChat(Chat chat, string senderId)
+        {
+            if (senderId == chat.TopicCreatorId)
+            {
+                chat.AnswererSeen = false;
+            }
+            else
+            {
+                chat.CreatorSeen = false;
+            }
+
+            // aktualizacja daty ostatniej aktywności
+            chat.LastActivity = DateTimeOffset.Now;
         }
 
         private string ConstructChatGroupId(int id)
