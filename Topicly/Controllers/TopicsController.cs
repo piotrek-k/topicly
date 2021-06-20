@@ -267,31 +267,31 @@ namespace Topicly.Controllers
         {
             var userId = GetCurrentUserId();
 
-            var tags = await _tagExtractor.GetTags(topicCreationViewModel.Content);
+            var tags = topicCreationViewModel.Tags
+                .Select(s => s.ToLowerInvariant())
+                .Distinct()
+                .ToList();
 
-            List<Tag> tagsInDb = new List<Tag>();
-            foreach (var tag in tags)
-            {
-                var inDb = await _context.Tags.FirstOrDefaultAsync(x =>
-                    x.Name.Equals(tag.ToLower().Trim()));
+            var tagsInDb = await _context.Tags
+                .Where(w => tags.Contains(w.Name))
+                .ToListAsync();
 
-                if (inDb == null)
-                {
-                    inDb = new Tag()
-                    {
-                        Name = tag
-                    };
-                }
+            var newTags = tags
+                .Except(tagsInDb.Select(s => s.Name))
+                .Select(tag => new Tag { Name = tag })
+                .ToList();
 
-                tagsInDb.Add(inDb);
-            }
-
-            await _context.Topics.AddAsync(new Topic
+            var topicTags = tagsInDb.Concat(newTags).ToList();
+            var newTopic = new Topic
             {
                 Name = topicCreationViewModel.Content,
                 CreatedById = userId,
-                Tags = tagsInDb
-            });
+                Tags = topicTags
+            };
+
+            await _context.Tags.AddRangeAsync(newTags);
+            await _context.Topics.AddAsync(newTopic);
+
             await _context.SaveChangesAsync();
 
             return Ok();

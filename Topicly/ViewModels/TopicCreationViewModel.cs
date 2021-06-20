@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Topicly.ViewModels
 {
@@ -15,7 +16,7 @@ namespace Topicly.ViewModels
         /// <summary>
         /// Lista nazw tagów powiązanych z tematem
         /// </summary>
-        public string Tags { get; set; }
+        public List<string> Tags { get; set; }
         
         /// <summary>
         /// Moment w którym temat ulega przedawnieniu (?)
