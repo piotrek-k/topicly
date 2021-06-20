@@ -34,7 +34,7 @@ namespace Topicly.ViewModels
         public bool AnswererSeen { get; set; }
         public bool AnswererDeleted { get; set; }
 
-        public string LastSentMessage { get; set; }
+        public string LastMessageSent { get; set; }
         
         /// <summary>
         /// Data utworzenia czatu
