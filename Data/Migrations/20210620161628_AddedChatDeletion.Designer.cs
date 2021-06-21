@@ -4,14 +4,16 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210620161628_AddedChatDeletion")]
+    partial class AddedChatDeletion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1121,9 +1123,6 @@ namespace Data.Migrations
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTimeOffset>("ExpiryDate")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -1139,7 +1138,6 @@ namespace Data.Migrations
                             Id = -1,
                             CreatedAt = new DateTimeOffset(new DateTime(2021, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedById = "c7b013f0-5201-4317-abd8-c211f91b7330",
-                            ExpiryDate = new DateTimeOffset(new DateTime(2021, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Name = "TEMAT #0"
                         },
                         new
@@ -1147,7 +1145,6 @@ namespace Data.Migrations
                             Id = -2,
                             CreatedAt = new DateTimeOffset(new DateTime(2021, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedById = "fab4fac1-c546-41de-aebc-a14da6895711",
-                            ExpiryDate = new DateTimeOffset(new DateTime(2021, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Name = "TEMAT #-1"
                         },
                         new
@@ -1155,7 +1152,6 @@ namespace Data.Migrations
                             Id = -3,
                             CreatedAt = new DateTimeOffset(new DateTime(2021, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedById = "c7b013f0-5201-4317-abd8-c211f91b7330",
-                            ExpiryDate = new DateTimeOffset(new DateTime(2021, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Name = "TEMAT #-2"
                         },
                         new
@@ -1163,7 +1159,6 @@ namespace Data.Migrations
                             Id = -4,
                             CreatedAt = new DateTimeOffset(new DateTime(2021, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedById = "fab4fac1-c546-41de-aebc-a14da6895711",
-                            ExpiryDate = new DateTimeOffset(new DateTime(2021, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Name = "TEMAT #-3"
                         },
                         new
@@ -1171,7 +1166,6 @@ namespace Data.Migrations
                             Id = -5,
                             CreatedAt = new DateTimeOffset(new DateTime(2021, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedById = "c7b013f0-5201-4317-abd8-c211f91b7330",
-                            ExpiryDate = new DateTimeOffset(new DateTime(2021, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Name = "TEMAT #-4"
                         },
                         new
@@ -1179,7 +1173,6 @@ namespace Data.Migrations
                             Id = -6,
                             CreatedAt = new DateTimeOffset(new DateTime(2021, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedById = "fab4fac1-c546-41de-aebc-a14da6895711",
-                            ExpiryDate = new DateTimeOffset(new DateTime(2021, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Name = "TEMAT #-5"
                         },
                         new
@@ -1187,7 +1180,6 @@ namespace Data.Migrations
                             Id = -7,
                             CreatedAt = new DateTimeOffset(new DateTime(2021, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedById = "c7b013f0-5201-4317-abd8-c211f91b7330",
-                            ExpiryDate = new DateTimeOffset(new DateTime(2021, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Name = "TEMAT #-6"
                         },
                         new
@@ -1195,7 +1187,6 @@ namespace Data.Migrations
                             Id = -8,
                             CreatedAt = new DateTimeOffset(new DateTime(2021, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedById = "fab4fac1-c546-41de-aebc-a14da6895711",
-                            ExpiryDate = new DateTimeOffset(new DateTime(2021, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Name = "TEMAT #-7"
                         },
                         new
@@ -1203,7 +1194,6 @@ namespace Data.Migrations
                             Id = -9,
                             CreatedAt = new DateTimeOffset(new DateTime(2021, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedById = "c7b013f0-5201-4317-abd8-c211f91b7330",
-                            ExpiryDate = new DateTimeOffset(new DateTime(2021, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Name = "TEMAT #-8"
                         },
                         new
@@ -1211,7 +1201,6 @@ namespace Data.Migrations
                             Id = -10,
                             CreatedAt = new DateTimeOffset(new DateTime(2021, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedById = "fab4fac1-c546-41de-aebc-a14da6895711",
-                            ExpiryDate = new DateTimeOffset(new DateTime(2021, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Name = "TEMAT #-9"
                         });
                 });
